@@ -12,7 +12,10 @@
   "author": "Sebastian Kropp <sebastian@kropponline.de>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/eascientific/ea-state-machine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/eascientific/ea-state-machine/issues"
   },
   "license": "MIT",
   "engines": {

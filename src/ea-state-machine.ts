@@ -2,3 +2,9 @@
 // import "core-js/fn/array.find"
 // ...
 export default class DummyClass {}
+
+export class FSM {
+  print(msg: string) {
+    console.log(msg)
+  }
+}

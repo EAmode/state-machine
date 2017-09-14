@@ -6,7 +6,7 @@ const state = {
   gas: {},
 }
 
-const transitionDefiniton={
+const transitionDefiniton = {
   initialize: {
     from: () => [state.solid],
     to: () => [state.liquid],
@@ -14,14 +14,13 @@ const transitionDefiniton={
   }
 }
 
-describe("Dummy test", () => {
-  it("works if true is truthy", () => {
-    expect(true).toBeTruthy()
-  })
-
-  it("DummyClass is instantiable", () => {
-    const fsm = new FSM()
+describe("FSM with start state", () => {
+  it("FSM can be instantiated with start state", () => {
+    const fsm = new FSM(state, transitionDefiniton, state.solid)
     expect(fsm).toBeInstanceOf(FSM)
-    fsm.print("test")
+  })
+  it("After instantiation, FSM should be in start state", () => {
+    const fsm = new FSM(state, transitionDefiniton, state.solid)
+    expect(fsm.currentState).toEqual(state.solid)
   })
 })

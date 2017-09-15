@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Subject } from 'rxjs/Subject'
-import { unnest, map, minBy, find, allPass } from 'ramda'
+import { unnest, map, minBy, find } from 'ramda'
 
 export class FSM {
   static selection = {
@@ -45,26 +45,30 @@ export class FSM {
   constructor(public states, public transitionDefinitions, startState: any = {}) {
     this.possibleTransitionInstances$ = new BehaviorSubject(null)
     this.transition$ = new BehaviorSubject(null)
-    map(s => {
-      if (!s.count) {
-        s.count = 0
-      }
-      if (!s.order) {
-        s.order = 0
-      }
-      if (!s.valid) {
-        s.valid = false
-      }
-      if (!s.changed) {
-        s.changed = false
-      }
-    }, states)
+    map(s => this.ensureStateValues(s), states)
+    this.ensureStateValues(startState)
     startState.startState = true
-    startState.count = 1
+    startState.count++
     if (startState.onEnter) {
       startState.onEnter()
     }
     this.currentState = startState
+    this.possibleTransitions = this.possibleTransitionInstances()
+  }
+
+  private ensureStateValues(state) {
+    if (!state.count) {
+      state.count = 0
+    }
+    if (!state.order) {
+      state.order = 0
+    }
+    if (!state.valid) {
+      state.valid = false
+    }
+    if (!state.changed) {
+      state.changed = false
+    }
   }
 
   changeStateData(state, data) {
@@ -79,7 +83,7 @@ export class FSM {
   }
 
   canTransitionTo(state) {
-    return this.possibleTransitions.includes(t => t.toState === state)
+    return this.possibleTransitions.find(t => t.toState === state) ? true : false
   }
 
   transitionTo(toState) {
@@ -120,46 +124,25 @@ export class FSM {
   }
 
   // TODO: replace part of logic with possibleTransitionInstancesFor(...) call
-  transitionByDefinition(transition, toState = null) {
-    const fromStates = transition.from(this.currentState)
-    const from = fromStates.find(s => s === this.currentState)
-    if (!from) {
-      throw new TransitionNotPossibleError('Transition is not available for this current state!')
+  transitionByDefinition(transitionDefinition, toState = null) {
+    const transitions = this.possibleTransitions.filter(t => t.transitionDefinition === transitionDefinition)
+    if (transitions.length === 0) {
+      throw new TransitionNotPossibleError('Transition Definition not available for current state!')
     }
-    const toStates = transition.to(this.currentState)
-    if (!toStates || toStates.length === 0) {
-      throw new TransitionNotPossibleError('No valid target state(s) found!')
-    }
-    let to
-    if (toStates.length > 1) {
+    let selectedTransition
+    if (transitions.length > 1) {
       if (!toState) {
-        to = minBy(s => s.order, toStates)
-        // throw new TransitionNotPossibleError('Multiple possible toStates found and no toState specified!')
+        throw new TransitionNotPossibleError('Multiple possible toStates found and no toState specified!')
       } else {
-        to = find(s => s === toState, toStates)
-        if (!to) {
+        selectedTransition = this.possibleTransitions.find(s => s === toState)
+        if (!selectedTransition) {
           throw new TransitionNotPossibleError('The specified toState can not be reached with this transition!')
         }
       }
     } else {
-      to = toStates[0]
+      selectedTransition = transitions[0]
     }
-    if (transition.guards) {
-      if (!allPass(transition.guards)(this.states, from, to)) {
-        throw new TransitionNotPossibleError('Transition not allowed by guards!')
-      }
-    }
-    if (from.onExit) {
-      from.onExit()
-    }
-    if (transition.action) {
-      transition.action()
-    }
-    this.currentState = to
-    if (to.onEnter) {
-      to.onEnter()
-    }
-    this.update()
+    this.transition(selectedTransition)
   }
 
   update() {

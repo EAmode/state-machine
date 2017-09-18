@@ -105,7 +105,9 @@
     "validate-commit-msg": "^2.14.0"
   },
   "dependencies": {
-    "ramda": "^0.24.1",
+    "ramda": "^0.24.1"
+  },
+  "peerDependencies": {
     "rxjs": "^5.4.3"
   }
 }

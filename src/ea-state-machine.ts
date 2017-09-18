@@ -42,7 +42,12 @@ export class FSM {
     this.update()
   }
 
-  constructor(public states, public transitionDefinitions, startState: any = {}) {
+  constructor(
+    public states,
+    public transitionDefinitions,
+    public startState: any = {},
+    public data = {}
+  ) {
     this.possibleTransitionInstances$ = new BehaviorSubject(null)
     this.transition$ = new BehaviorSubject(null)
     map(s => this.ensureStateValues(s), states)
@@ -69,6 +74,11 @@ export class FSM {
     if (!state.changed) {
       state.changed = false
     }
+  }
+
+  changeData(data) {
+    this.data = data
+    this.update()
   }
 
   changeStateData(state, data) {
@@ -123,7 +133,6 @@ export class FSM {
     this.transition$.next(transition)
   }
 
-  // TODO: replace part of logic with possibleTransitionInstancesFor(...) call
   transitionByDefinition(transitionDefinition, toState = null) {
     const transitions = this.possibleTransitions.filter(t => t.transitionDefinition === transitionDefinition)
     if (transitions.length === 0) {
@@ -147,13 +156,14 @@ export class FSM {
 
   update() {
     this.possibleTransitions = this.possibleTransitionInstances()
+    // TODO: only send if changed
     this.possibleTransitionInstances$.next(this.possibleTransitions)
   }
 
   checkGuards(transitionDefinition, fromState, toState): Array<any> {
     if (transitionDefinition.guards) {
       return transitionDefinition.guards.filter(guard => {
-        const guardCondition = guard(this.states, fromState, toState)
+        const guardCondition = guard(this, fromState, toState)
         if (guardCondition !== undefined && guardCondition === false) {
           return true
         }

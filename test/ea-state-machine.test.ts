@@ -1,5 +1,7 @@
 import { FSM } from '../src/ea-state-machine'
 
+
+
 const h2oStateMachine = () => {
   const state = {
     solid: {
@@ -7,7 +9,9 @@ const h2oStateMachine = () => {
       count: 1,
       order: 1,
       valid: true,
-      changed: true
+      changed: true,
+      onEnter: () => { console.log('Entering Ice State!') },
+      onExit: () => { console.log('Leaving Ice State!') }
     },
     liquid: {
       name: 'Water'
@@ -17,17 +21,38 @@ const h2oStateMachine = () => {
     },
   }
 
+  const guard = {
+    canMelt: (fsm, from, to) => fsm.data.temperature > 0,
+    canVaporize: (fsm, from, to) => fsm.data.temperature > 100,
+    canCondense: (fsm, from, to) => fsm.data.temperature < 100,
+    canFreeze: (fsm, from, to) => fsm.data.temperature >= 0,
+  }
+
   const transitionDefiniton = {
     melt: {
       from: () => [state.solid],
       to: () => [state.liquid],
-      action: () => console.log('starting the statemachine'),
+      guards: [guard.canMelt],
+      action: () => console.log('melting ...'),
     },
     vaporize: {
       from: () => [state.liquid],
       to: () => [state.gas],
-      action: () => console.log('starting the statemachine'),
-    }
+      action: () => console.log('vaporizing ...'),
+      guards: [guard.canVaporize],
+    },
+    condense: {
+      from: () => [state.gas],
+      to: () => [state.liquid],
+      guards: [guard.canCondense],
+      action: () => console.log('condenseing ...'),
+    },
+    freeze: {
+      from: () => [state.liquid],
+      to: () => [state.solid],
+      guards: [guard.canFreeze],
+      action: () => console.log('freezing ...'),
+    },
   }
 
   return Object.freeze({ state, transitionDefiniton })
@@ -35,7 +60,8 @@ const h2oStateMachine = () => {
 
 describe('FSM WITH start state', () => {
   const { state, transitionDefiniton } = h2oStateMachine()
-  const fsm = new FSM(state, transitionDefiniton, state.solid)
+  const environment = { temperature: 0 }
+  const fsm = new FSM(state, transitionDefiniton, state.solid, environment)
   it('FSM can be instantiated with start state', () => {
     expect(fsm).toBeInstanceOf(FSM)
   })
@@ -57,8 +83,13 @@ describe('FSM WITH start state', () => {
   it('Current State count should be increased by one', () => {
     expect(fsm.currentState.count).toEqual(2)
   })
+  it('Cannot transition to liquid (blocked by guard)', () => {
+    expect(fsm.canTransitionTo(state.liquid)).toEqual(false)
+  })
   it('Can transition to liquid', () => {
-    expect(fsm.canTransitionTo(state.liquid)).toBeTruthy()
+    environment.temperature = 4
+    fsm.changeData(environment)
+    expect(fsm.canTransitionTo(state.liquid)).toEqual(true)
   })
   it('Transitioning to liquid by definition', () => {
     fsm.transitionByDefinition(transitionDefiniton.melt)
@@ -66,6 +97,8 @@ describe('FSM WITH start state', () => {
     expect(fsm.currentState.count).toEqual(1)
   })
   it('Transitioning to gas by selecting first possible transtion to gas state', () => {
+    environment.temperature = 101
+    fsm.changeData(environment)
     fsm.transitionTo(state.gas)
     expect(fsm.currentState).toEqual(state.gas)
     expect(fsm.currentState.count).toEqual(1)

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="19cm" height="7cm" viewBox="340 185 376 130" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="341" y="230" width="80" height="36" rx="10" ry="10"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="341" y="230" width="80" height="36" rx="10" ry="10"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="381" y="252.8">
+      <tspan x="381" y="252.8">Solid</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="490" y="233" width="80" height="36" rx="10" ry="10"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="490" y="233" width="80" height="36" rx="10" ry="10"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="530" y="255.8">
+      <tspan x="530" y="255.8">Liquid</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="635" y="235" width="80" height="36" rx="10" ry="10"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="635" y="235" width="80" height="36" rx="10" ry="10"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="675" y="257.8">
+      <tspan x="675" y="257.8">Gas</tspan>
+    </text>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 652.393,227.785 A 84.7126,84.7126 0 0 0 546.168,232"/>
+    <polygon style="fill: #000000" points="658.197,232.466 647.482,229.276 652.725,227.337 654.32,221.98 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="658.197,232.466 647.482,229.276 652.725,227.337 654.32,221.98 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="580" y="202">
+    <tspan x="580" y="202">vaporize</tspan>
+  </text>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 556.999,275.354 A 91.0542,91.0542 0 0 0 654.778,272.005"/>
+    <polygon style="fill: #000000" points="550.717,271.326 561.725,273.281 556.736,275.801 555.758,281.305 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="550.717,271.326 561.725,273.281 556.736,275.801 555.758,281.305 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="582" y="312">
+    <tspan x="582" y="312">condense</tspan>
+  </text>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 509.745,225.278 A 84.5586,84.5586 0 0 0 395.528,229.053"/>
+    <polygon style="fill: #000000" points="515.206,230.356 504.742,226.418 510.109,224.854 512.078,219.622 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="515.206,230.356 504.742,226.418 510.109,224.854 512.078,219.622 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="443" y="198">
+    <tspan x="443" y="198">melt</tspan>
+  </text>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 404.725,273.036 A 89.3413,89.3413 0 0 0 512.313,269.977"/>
+    <polygon style="fill: #000000" points="398.812,268.485 409.608,271.391 404.418,273.467 402.965,278.865 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="398.812,268.485 409.608,271.391 404.418,273.467 402.965,278.865 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="435" y="308">
+    <tspan x="435" y="308">freeze</tspan>
+  </text>
+</svg>

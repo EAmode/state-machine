@@ -2,6 +2,8 @@
 
 A library for finite state machines.
 
+![ea-state-machine](statemachine-mater.svg)
+
 # Installation
 
 Using npm:

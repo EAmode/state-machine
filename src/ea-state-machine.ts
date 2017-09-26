@@ -1,6 +1,7 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Subject } from 'rxjs/Subject'
 import { unnest, map, minBy, find } from 'ramda'
+import { State, Transition } from './types'
 
 export class FSM {
   static selection = {
@@ -9,6 +10,17 @@ export class FSM {
       const selectedTransitions =
         tansitions
           .filter(t => t.isPossible && t.toState.order && t.toState.order > currentState.order)
+          .sort((tl, tr) => (tl.order && tr.order) ? tl.order - tr.order : 0)
+      if (selectedTransitions && selectedTransitions.length > 0) {
+        return selectedTransitions[0]
+      } else {
+        return []
+      }
+    },
+    firstPreviousState: (tansitions, currentState) => {
+      const selectedTransitions =
+        tansitions
+          .filter(t => t.isPossible && t.toState.order && t.toState.order < currentState.order)
           .sort((tl, tr) => (tl.order && tr.order) ? tl.order - tr.order : 0)
       if (selectedTransitions && selectedTransitions.length > 0) {
         return selectedTransitions[0]
@@ -28,10 +40,10 @@ export class FSM {
       }
     },
   }
-  possibleTransitions
+  possibleTransitions: Array<Transition>
   possibleTransitionInstances$: Subject<any>
   transition$: Subject<any>
-  currentState
+  currentState: State
 
   get valid() {
     return (this.currentState.valid) ? true : false
@@ -92,7 +104,7 @@ export class FSM {
     this.changeStateData(this.currentState, data)
   }
 
-  canTransitionTo(state) {
+  canTransitionTo(state: State) {
     return this.possibleTransitions.find(t => t.toState === state) ? true : false
   }
 

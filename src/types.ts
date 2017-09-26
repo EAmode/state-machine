@@ -1,8 +1,8 @@
 export interface State {
   name: string,
-  count: number,
-  order: number,
-  valid: boolean,
+  count?: number,
+  order?: number,
+  valid?: boolean,
   data?: any
 }
 
@@ -24,6 +24,7 @@ export interface TransitionDefinition {
   order: number,
   valid: boolean,
   data?: any,
+  select?(transitions, fsm),
   from(currentState: State): Array<State>,
   to(currentState: State): Array<State>,
 }

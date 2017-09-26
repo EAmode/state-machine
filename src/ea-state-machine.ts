@@ -17,6 +17,17 @@ export class FSM {
         return []
       }
     },
+    firstPreviousState: (tansitions, currentState) => {
+      const selectedTransitions =
+        tansitions
+          .filter(t => t.isPossible && t.toState.order && t.toState.order < currentState.order)
+          .sort((tl, tr) => (tl.order && tr.order) ? tl.order - tr.order : 0)
+      if (selectedTransitions && selectedTransitions.length > 0) {
+        return selectedTransitions[0]
+      } else {
+        return []
+      }
+    },
     allPreviousStates: (tansitions, currentState) => {
       const selectedTransitions =
         tansitions

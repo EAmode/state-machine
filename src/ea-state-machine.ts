@@ -1,6 +1,7 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Subject } from 'rxjs/Subject'
 import { unnest, map, minBy, find } from 'ramda'
+import { State, Transition } from './types'
 
 export class FSM {
   static selection = {
@@ -28,10 +29,10 @@ export class FSM {
       }
     },
   }
-  possibleTransitions
+  possibleTransitions: Array<Transition>
   possibleTransitionInstances$: Subject<any>
   transition$: Subject<any>
-  currentState
+  currentState: State
 
   get valid() {
     return (this.currentState.valid) ? true : false
@@ -92,7 +93,7 @@ export class FSM {
     this.changeStateData(this.currentState, data)
   }
 
-  canTransitionTo(state) {
+  canTransitionTo(state: State) {
     return this.possibleTransitions.find(t => t.toState === state) ? true : false
   }
 

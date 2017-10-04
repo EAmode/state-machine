@@ -40,6 +40,17 @@ const stepStateMachine = () => {
       to: () => [state.step1, state.step2, state.step3],
       select: FSM.selection.firstPreviousState,
       action: () => console.log('stepping back to previous step ...'),
+    },
+    firstToSecond: {
+      from: () => [state.step1],
+      to: () => [state.step2],
+      action: (fsm, from, to) => {
+        console.log('stepping forward from step 1 to step 2 ...')
+        expect(fsm.currentState).toEqual(fsm.states.step1)
+        expect(fsm.currentState).toEqual(state.step1)
+        expect(from).toEqual(fsm.states.step1)
+        expect(to).toEqual(fsm.states.step2)
+      },
     }
   }
 
@@ -60,5 +71,14 @@ describe('Stepping with continue', () => {
     fsm.transitionByDefinition(transitionDefiniton.backToPreviousStep)
     expect(fsm.currentState).toEqual(state.step1)
   })
+})
 
+describe('Stepping with firstToSecond', () => {
+  const { state, transitionDefiniton } = stepStateMachine()
+  const fsm = new FSM(state, transitionDefiniton, state.step1)
+
+  it('Step from 1 to step 2', () => {
+    fsm.transitionByDefinition(transitionDefiniton.firstToSecond)
+    expect(fsm.currentState).toEqual(state.step2)
+  })
 })

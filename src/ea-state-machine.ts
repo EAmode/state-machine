@@ -133,7 +133,7 @@ export class FSM {
       transition.fromState.onExit(this)
     }
     if (transition.transitionDefinition.action) {
-      transition.transitionDefinition.action()
+      transition.transitionDefinition.action(this, transition.fromState, transition.toState)
     }
     this.currentState = transition.toState
     if (transition.toState.onEnter) {

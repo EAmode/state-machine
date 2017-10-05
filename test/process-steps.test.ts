@@ -35,6 +35,12 @@ const stepStateMachine = () => {
       select: FSM.selection.firstNextState,
       action: () => console.log('continuing to next step ...'),
     },
+    continueToLastStep: {
+      from: () => [state.step1],
+      to: () => [state.step2, state.step3],
+      select: FSM.selection.lastNextState,
+      action: () => console.log('continuing to next step ...'),
+    },
     backToPreviousStep: {
       from: () => [state.step2, state.step3],
       to: () => [state.step1, state.step2, state.step3],
@@ -68,8 +74,16 @@ describe('Stepping with continue', () => {
     expect(fsm.currentState).toEqual(state.step2)
   })
   it('Can step back to step 2', () => {
+    expect(fsm.currentState).toEqual(state.step2)
+    expect(fsm.canTransitionTo(state.step1)).toBe(true)
     fsm.transitionByDefinition(transitionDefiniton.backToPreviousStep)
     expect(fsm.currentState).toEqual(state.step1)
+  })
+  it('Can jump to step 3', () => {
+    expect(fsm.currentState).toEqual(state.step1)
+    expect(fsm.canTransitionTo(state.step3)).toBe(true)
+    fsm.transitionByDefinition(transitionDefiniton.continueToLastStep)
+    expect(fsm.currentState).toEqual(state.step3)
   })
 })
 

@@ -55,8 +55,8 @@ export class FSM {
   static filter: { [key: string]: TransitionFilter } = {
     possibleTransitions: ts => ts.filter(t => t.failingGuards.length === 0),
     impossibleTransitions: ts => ts.filter(t => t.failingGuards.length !== 0),
-    minState: ts => [ts.reduce((prev, next) => (next.toState < prev.toState) ? next : prev)],
-    maxState: ts => [ts.reduce((prev, next) => (next.toState > prev.toState) ? next : prev)],
+    minState: ts => [ts.reduce((prev, next) => (next.toState.order < prev.toState.order) ? next : prev)],
+    maxState: ts => [ts.reduce((prev, next) => (next.toState.order > prev.toState.order) ? next : prev)],
   }
   currentTransitions: Array<Transition>
   possibleTransitionInstances$: Subject<any>

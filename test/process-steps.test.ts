@@ -100,9 +100,9 @@ describe('Stepping with continue', () => {
   })
   it('Transition to max state', () => {
     fsm.transitionByFilter(FSM.filter.maxState)
-    expect(fsm.currentState).toEqual(state.step2)
+    expect(fsm.currentState).toEqual(state.step3)
   })
-  it('Transition to max state', () => {
+  it('Transition to min state', () => {
     fsm.transitionByFilter(FSM.filter.minState)
     expect(fsm.currentState).toEqual(state.step1)
   })

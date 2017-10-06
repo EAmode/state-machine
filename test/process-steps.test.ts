@@ -1,7 +1,5 @@
 import { FSM } from '../src/ea-state-machine'
 
-
-
 const stepStateMachine = () => {
   const state = {
     step1: {
@@ -84,6 +82,29 @@ describe('Stepping with continue', () => {
     expect(fsm.canTransitionTo(state.step3)).toBe(true)
     fsm.transitionByDefinition(transitionDefiniton.continueToLastStep)
     expect(fsm.currentState).toEqual(state.step3)
+  })
+  it('Cannot jump to non existing state', () => {
+    const selectNonExisting = ts => ts.filter(t => t.toState.name === 'Non existing')
+    try {
+      fsm.transitionByFilter(selectNonExisting)
+    } catch (e) {
+      expect(e.fsm).toBe(fsm)
+      expect(e.possibleTransitions.length).toEqual(1)
+      expect(e.impossibleTransitions.length).toEqual(0)
+    }
+  })
+  it('Can jump by Filter back to step 1', () => {
+    const step1 = ts => ts.filter(t => t.toState.order === 1)
+    fsm.transitionByFilter(step1)
+    expect(fsm.currentState).toEqual(state.step1)
+  })
+  it('Transition to max state', () => {
+    fsm.transitionByFilter(FSM.filter.maxState)
+    expect(fsm.currentState).toEqual(state.step2)
+  })
+  it('Transition to max state', () => {
+    fsm.transitionByFilter(FSM.filter.minState)
+    expect(fsm.currentState).toEqual(state.step1)
   })
 })
 

@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Subject } from 'rxjs/Subject'
 import { unnest, map, minBy, find } from 'ramda'
-import { State, Transition } from './types'
+import { State, Transition, TransitionFilter } from './types'
 
 export class FSM {
   static selection = {
@@ -51,7 +51,14 @@ export class FSM {
       }
     },
   }
-  possibleTransitions: Array<Transition>
+
+  static filter: { [key: string]: TransitionFilter } = {
+    possibleTransitions: ts => ts.filter(t => t.failingGuards.length === 0),
+    impossibleTransitions: ts => ts.filter(t => t.failingGuards.length !== 0),
+    minState: ts => [ts.reduce((prev, next) => (next.toState < prev.toState) ? next : prev)],
+    maxState: ts => [ts.reduce((prev, next) => (next.toState > prev.toState) ? next : prev)],
+  }
+  currentTransitions: Array<Transition>
   possibleTransitionInstances$: Subject<any>
   transition$: Subject<any>
   currentState: State
@@ -81,7 +88,7 @@ export class FSM {
       startState.onEnter()
     }
     this.currentState = startState
-    this.possibleTransitions = this.possibleTransitionInstances()
+    this.currentTransitions = this.possibleTransitionInstances()
   }
 
   private ensureStateValues(state) {
@@ -116,11 +123,11 @@ export class FSM {
   }
 
   canTransitionTo(state: State) {
-    return this.possibleTransitions.find(t => t.toState === state) ? true : false
+    return this.currentTransitions.find(t => t.toState === state) ? true : false
   }
 
   transitionTo(toState) {
-    const firstpossibleTransition = this.possibleTransitions.find(t => t.toState === toState)
+    const firstpossibleTransition = this.currentTransitions.find(t => t.toState === toState)
     if (firstpossibleTransition) {
       this.transition(firstpossibleTransition)
     } else {
@@ -156,8 +163,21 @@ export class FSM {
     this.transition$.next(transition)
   }
 
+  transitionByFilter(filter: TransitionFilter) {
+    const transitions = filter(FSM.filter.possibleTransitions(this.currentTransitions), this)
+    if (transitions.length === 0) {
+      throw new TransitionNotPossibleError(
+        'Transition Filter has no transitions for current state!',
+        this,
+        FSM.filter.possibleTransitions(this.currentTransitions),
+        FSM.filter.impossibleTransitions(this.currentTransitions)
+      )
+    }
+    this.transition(transitions[0])
+  }
+
   transitionByDefinition(transitionDefinition, toState = null) {
-    const transitions = this.possibleTransitions.filter(t => t.transitionDefinition === transitionDefinition)
+    const transitions = this.currentTransitions.filter(t => t.transitionDefinition === transitionDefinition)
     if (transitions.length === 0) {
       throw new TransitionNotPossibleError('Transition Definition not available for current state!')
     }
@@ -166,7 +186,7 @@ export class FSM {
       if (!toState) {
         throw new TransitionNotPossibleError('Multiple possible toStates found and no toState specified!')
       } else {
-        selectedTransition = this.possibleTransitions.find(s => s === toState)
+        selectedTransition = this.currentTransitions.find(s => s === toState)
         if (!selectedTransition) {
           throw new TransitionNotPossibleError('The specified toState can not be reached with this transition!')
         }
@@ -178,9 +198,9 @@ export class FSM {
   }
 
   update() {
-    this.possibleTransitions = this.possibleTransitionInstances()
+    this.currentTransitions = this.possibleTransitionInstances()
     // TODO: only send if changed
-    this.possibleTransitionInstances$.next(this.possibleTransitions)
+    this.possibleTransitionInstances$.next(this.currentTransitions)
   }
 
   checkGuards(transitionDefinition, fromState, toState): Array<any> {
@@ -242,7 +262,7 @@ export class FSM {
 }
 
 export class TransitionNotPossibleError extends Error {
-  constructor(m: string, public failingGuards = []) {
+  constructor(m: string, public fsm = {}, public possibleTransitions = [], public impossibleTransitions = []) {
     super(m)
     Object.setPrototypeOf(this, TransitionNotPossibleError.prototype)
   }

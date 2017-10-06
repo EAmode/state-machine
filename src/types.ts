@@ -1,3 +1,5 @@
+import { FSM } from './ea-state-machine'
+
 export interface State {
   name: string,
   count?: number,
@@ -36,3 +38,5 @@ export interface Guard {
     valid: boolean,
     data?: any)
 }
+
+export type TransitionFilter = (tansitions: Array<Transition>, fsm?: FSM) => Array<Transition>

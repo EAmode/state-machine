@@ -79,3 +79,19 @@ const fsm = new FSM(
   environment // associated data with the state machine
 )
 ```
+... getting the current state
+
+`fsm.currentState` // ice: Object `state.solid`
+
+... can we melt?
+
+`fsm.canTranstionTo(fsm.statesliquid)` // `false`
+
+... heating the environment
+```js
+fsm.changeData({ environment.temperature = 4}) // heat and notify FSM 
+const isPossible = fsm.canTranstionTo(fsm.statesliquid) // true
+fsm.transitionByDefinition(transitionDefiniton.melt)
+fsm.currentState // state.liquid (water)
+```
+

@@ -1,4 +1,6 @@
 # ea-state-machine
+[![NPM version](https://img.shields.io/npm/v/ea-state-machine.svg)](https://www.npmjs.org/package/ea-state-machine)
+[![Travis](https://img.shields.io/travis/eascientific/ea-state-machine/master.svg)](https://travis-ci.org/eascientific/ea-state-machine)
 
 A library for general purpose finite state machines with support for navigation and routing.
 
@@ -25,8 +27,55 @@ Using npm:
 ```shell
   npm install --save-dev javascript-state-machine
 ```
+```js
+import { FSM } from 'ea-state-machine'
 
-In a browser:
-```html
-  <script src='CDN LINK HERE'></script>
+// defining set of possible states
+const state = {
+  solid: { name: 'Ice'},
+  liquid: { name: 'Water'},
+  gas: { name: 'Vapor'}
+}
+// guards prevent transitions by returning false
+const guard = {
+  canMelt: (fsm, from, to) => fsm.data.temperature > 0,
+  canVaporize: (fsm, from, to) => fsm.data.temperature > 100,
+  canCondense: (fsm, from, to) => fsm.data.temperature < 100,
+  canFreeze: (fsm, from, to) => fsm.data.temperature >= 0
+}
+// transition definitions can be FROM one or multiple states TO one or many
+const transitionDefiniton = {
+    melt: {
+      from: () => [state.solid],
+      to: () => [state.liquid],
+      guards: [guard.canMelt],
+      action: () => console.log('melting ...'),
+    },
+    vaporize: {
+      from: () => [state.liquid],
+      to: () => [state.gas],
+      action: () => console.log('vaporizing ...'),
+      guards: [guard.canVaporize],
+    },
+    condense: {
+      from: () => [state.gas],
+      to: () => [state.liquid],
+      guards: [guard.canCondense],
+      action: () => console.log('condenseing ...'),
+    },
+    freeze: {
+      from: () => [state.liquid],
+      to: () => [state.solid],
+      guards: [guard.canFreeze],
+      action: () => console.log('freezing ...'),
+    },
+  }
+// data associated with the fsm
+const environment = { temperature: 0 }
+const fsm = new FSM(
+  state, // all states
+  transitionDefiniton, // transition defiitions between states
+  state.solid, // optional: start state, if omitted, a transition to the first state needs to happen
+  environment // associated data with the state machine
+)
 ```

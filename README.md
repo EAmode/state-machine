@@ -55,7 +55,7 @@ const guard = {
   canFreeze: (fsm, from, to) => fsm.data.temperature >= 0
 }
 ```
-[Transition Definitions](/doc/transition-definitions.md) can be from many 
+[Transition Definitions](/doc/transition-definitions.md) can be from many to many
 ```javascript
 const transitionDefiniton = {
     melt: {

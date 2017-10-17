@@ -4,9 +4,9 @@
 
 A library for general purpose finite state machines with support for navigation and routing.
 
-<center>
+<p align="center">
   <img src="./doc/statemachine-matter.svg" width="450px">
-</center>
+</p>
 
 ## Overview
 
@@ -25,27 +25,38 @@ Examples:
 
 ## Usage
 
-Using npm:
+Using node/webpack/rollup/browserify:
 ```shell
-  npm install --save-dev javascript-state-machine
+  npm install ea-state-machine
 ```
-```js
+```javascript
 import { FSM } from 'ea-state-machine'
-
-// defining set of possible states
+```
+Defining set of possible [States](/doc/state.md).
+```javascript
 const state = {
-  solid: { name: 'Ice'},
-  liquid: { name: 'Water'},
-  gas: { name: 'Vapor'}
+  solid: { 
+    name: 'Ice'
+  },
+  liquid: { 
+    name: 'Water'
+  },
+  gas: { 
+    name: 'Vapor'
+  }
 }
-// guards prevent transitions by returning false
+```
+[Guards](/doc/guards.md) prevent transitions by returning false
+```javascript
 const guard = {
   canMelt: (fsm, from, to) => fsm.data.temperature > 0,
   canVaporize: (fsm, from, to) => fsm.data.temperature > 100,
   canCondense: (fsm, from, to) => fsm.data.temperature < 100,
   canFreeze: (fsm, from, to) => fsm.data.temperature >= 0
 }
-// transition definitions can be FROM one or multiple states TO one or many
+```
+[Transition Definitions](/doc/transition-definitions.md) can be from many 
+```javascript
 const transitionDefiniton = {
     melt: {
       from: () => [state.solid],
@@ -72,41 +83,44 @@ const transitionDefiniton = {
       action: () => console.log('freezing ...'),
     },
   }
+```
+Using the above state machine.
+```js
 // data associated with the fsm
-const environment = { temperature: 0 }
+const environment = { 
+  temperature: 0 
+}
+
 const fsm = new FSM(
   state, // all states
-  transitionDefiniton, // transition defiitions between states
+  transitionDefiniton, // transition defitions between states
   state.solid, // optional: start state, if omitted, a transition to the first state needs to happen
-  environment // associated data with the state machine
+  environment // optional: associated data with the state machine
 )
-```
-... getting the current state
 
-`fsm.currentState` // ice: Object `state.solid`
+fsm.currentState === fsm.states.solid // true
 
-... can we melt?
-
-`fsm.canTranstionTo(fsm.statesliquid)` // `false`
-
-... heating the environment
-```js
-fsm.changeData({ environment.temperature = 4}) // heat and notify FSM 
-const isPossible = fsm.canTranstionTo(fsm.statesliquid) // true
-fsm.transitionByDefinition(transitionDefiniton.melt)
-fsm.currentState // state.liquid (water)
+// Can we melt?
+fsm.canTranstionTo(fsm.statesliquid) // false
+// Heat and update FSM 
+fsm.changeData({ environment.temperature = 4})
+fsm.canTranstionTo(fsm.states.liquid) // true
+fs.transtionTo(fsm.states.liquid)
+// // different ways, but same effect as above
+// fsm.transitionByDefinition(transitionDefiniton.melt)
+// fsm.transition(fsm.transitions.filter(t => t.to === fsm.states.liquid))
+fsm.currentState.name === 'Water' // true
 ```
 
 ## Documentation
 
+TODO: focus on up side and move this to documentation
+ - [Design](doc/design.md)
+ - [States](/doc/state.md)
+ - [Transition Definitions](/doc/transition-definitions.md)
+ - [Guards](/doc/guards.md)
+ - API? (how to link to doc generated?)
 
-TODO: focus on up side and move this to documentation, create a doc folder, 
-one doc page (does anchor linking work?)
- - Design
- - States
- - Transitions
- - Guards
- - API? (how to link to doc generated)
- - List examples
+## Examples
 One page per example
 

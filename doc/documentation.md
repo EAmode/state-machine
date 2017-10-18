@@ -1,13 +1,28 @@
 # Documentation
 
-<a name="states"/>
-## States
+## <a name="design"/> Design
+
+`ea-state-machine` can be used to model any type of state machine, but the main goal is to provide a general abstraction for User/UI navigation in front-end appslications, that can be used across different UI frameworks.
+
+> "Write your routing logic once, run it everywhere!"
+
+Most `routing` libraries in have notions of state machines, but are often incomplete or are using a wrong abstraction. 
+Examples: A `route` is not a real route from `A` to `B`, but rather a `page`, which is better modeled as a `state`. Once you realize that, you can model "real" routes as a transition from one state to the other, which allows you to execute business logic when a user navigates from one page to another. 
+
+Guards on transitions allow to control the flow of a user with a centralzed set of business rules.
+
+One reason that current routing libraries are not fully supporting a state machine model, is that users, in the most common case, are allowed to navigate anywhere. Defining all those transitions is tedious and hence are not being considered. Guards are not on the transition, but more an entry condition to a page (e.g. [IsAuthorized]).
+
+This library addresses this shortcomming with the concept of `Transition Definitions`. `Transition Definitions` allow for the simple common case as well extending your page navigation with complex flow rules.
+Using this abstation of this library allows to move this logic from an older framework to a new one, or even use it it different environments like native apps. 
+
+## <a name="states"/> States
 
 <p align="center">
   <img src="./statemachine-matter-simple.svg" width="400px">
 </p>
 
-A `ea-state-machine` consists of a finite set of states, e.g:
+An `ea-state-machine` consists of a finite set of states, e.g:
 
 - solid
 - liquid
@@ -44,7 +59,7 @@ const state = {
 
 ```
 
-## Transition Definitions
+## <a name="transitions"/> Transition Definitions
 
 A transition definition is a directed connection between one or many states.
 <p align="left">
@@ -101,4 +116,4 @@ const transitionDefinition = {
       to: (fsm) => [fsm.states],
 // ...
 ```
-## Guards
+## <a name="guards"/> Guards

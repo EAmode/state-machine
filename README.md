@@ -2,7 +2,7 @@
 [![NPM version](https://img.shields.io/npm/v/ea-state-machine.svg)](https://www.npmjs.org/package/ea-state-machine)
 [![Travis](https://img.shields.io/travis/eascientific/ea-state-machine/master.svg)](https://travis-ci.org/eascientific/ea-state-machine)
 
-A library for general purpose finite state machines with support for navigation and routing.
+A a reactive modern JavaScript library for general purpose finite state machines with support for navigation and routing.
 
 <p align="center">
   <img src="./doc/statemachine-matter.svg" width="450px">
@@ -114,13 +114,12 @@ fsm.currentState.name === 'Water' // true
 
 ## Documentation
 
-TODO: focus on up side and move this to documentation
  - [Design](doc/documentation#design)
- - [States](/doc/states.md#states)
- - [Transition Definitions](/doc/transition-definitions.md)
- - [Guards](/doc/guards.md)
- - API? (how to link to doc generated?)
+ - [States](doc/documentation#states)
+ - [Transition Definitions](doc/documentation#transitions)
+ - [Guards](doc/documentation#design)
+ - [API] (http://ea-state-machine.eascientific.com/)
 
 ## Examples
-One page per example
+TODO: One page per example
 

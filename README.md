@@ -115,8 +115,8 @@ fsm.currentState.name === 'Water' // true
 ## Documentation
 
 TODO: focus on up side and move this to documentation
- - [Design](doc/design.md)
- - [States](/doc/states.md)
+ - [Design](doc/documentation#design)
+ - [States](/doc/states.md#states)
  - [Transition Definitions](/doc/transition-definitions.md)
  - [Guards](/doc/guards.md)
  - API? (how to link to doc generated?)

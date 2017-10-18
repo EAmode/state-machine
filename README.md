@@ -32,7 +32,7 @@ Using node/webpack/rollup/browserify:
 ```javascript
 import { FSM } from 'ea-state-machine'
 ```
-Defining set of possible [States](/doc/state.md).
+Defining set of possible [States](/doc/states.md).
 ```javascript
 const state = {
   solid: { 
@@ -106,7 +106,7 @@ fsm.canTranstionTo(fsm.statesliquid) // false
 fsm.changeData({ environment.temperature = 4})
 fsm.canTranstionTo(fsm.states.liquid) // true
 fs.transtionTo(fsm.states.liquid)
-// // different ways, but same effect as above
+// // different ways with same effect as above
 // fsm.transitionByDefinition(transitionDefiniton.melt)
 // fsm.transition(fsm.transitions.filter(t => t.to === fsm.states.liquid))
 fsm.currentState.name === 'Water' // true
@@ -116,7 +116,7 @@ fsm.currentState.name === 'Water' // true
 
 TODO: focus on up side and move this to documentation
  - [Design](doc/design.md)
- - [States](/doc/state.md)
+ - [States](/doc/states.md)
  - [Transition Definitions](/doc/transition-definitions.md)
  - [Guards](/doc/guards.md)
  - API? (how to link to doc generated?)

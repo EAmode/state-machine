@@ -1,5 +1,11 @@
 # Documentation
 
+1. [Design](#design)
+1. [States](#states)
+1. [Transition Definitions](#transitions)
+1. [Guards](#guards)
+1. [API](http://ea-state-machine.eascientific.com/)
+
 ## <a name="design"/> Design
 
 `ea-state-machine` can be used to model any type of state machine, but the main goal is to provide a general abstraction for User/UI navigation in front-end appslications, that can be used across different UI frameworks.

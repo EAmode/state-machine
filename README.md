@@ -4,7 +4,7 @@
 
 A a reactive modern JavaScript library for general purpose finite state machines with support for navigation and routing.
 
-<p align="center">
+<p align="left">
   <img src="./doc/statemachine-matter.svg" width="450px">
 </p>
 
@@ -114,11 +114,11 @@ fsm.currentState.name === 'Water' // true
 
 ## Documentation
 
- - [Design](doc/documentation#design)
- - [States](doc/documentation#states)
- - [Transition Definitions](doc/documentation#transitions)
- - [Guards](doc/documentation#design)
- - [API] (http://ea-state-machine.eascientific.com/)
+ - [Design](doc/documentation.md#design)
+ - [States](doc/documentation.md#states)
+ - [Transition Definitions](doc/documentation.md#transitions)
+ - [Guards](doc/documentation.md#guards)
+ - [API](http://ea-state-machine.eascientific.com/)
 
 ## Examples
 TODO: One page per example

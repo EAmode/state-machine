@@ -6,7 +6,7 @@
 1. [Guards](#guards)
 1. [API](http://ea-state-machine.eascientific.com/)
 
-## <a name="design"/> Design
+## <a name="design">Design</a>
 
 `ea-state-machine` can be used to model any type of state machine, but the main goal is to provide a general abstraction for User/UI navigation in front-end appslications, that can be used across different UI frameworks.
 
@@ -22,7 +22,7 @@ One reason that current routing libraries are not fully supporting a state machi
 This library addresses this shortcomming with the concept of `Transition Definitions`. `Transition Definitions` allow for the simple common case as well extending your page navigation with complex flow rules.
 Using this abstation of this library allows to move this logic from an older framework to a new one, or even use it it different environments like native apps. 
 
-## <a name="states"/> States
+## <a name="states">States</a>
 
 <img src="./statemachine-matter-simple.svg" width="400px">
 
@@ -63,7 +63,7 @@ const state = {
 
 ```
 
-## <a name="transitions"/> Transition Definitions
+## <a name="transitions">Transition Definitions</a>
 
 A transition definition is a directed connection between one or many states.
 
@@ -119,4 +119,13 @@ const transitionDefinition = {
       to: (fsm) => [fsm.states],
 // ...
 ```
-## <a name="guards"/> Guards
+## <a name="guards">Guards</a>
+
+Guards prevent transitions within a state-machine. They enable a rule-based approach to state transitions. Returning false prevents a transition. If `true`, `undefinded`, or `null` are returned, a transition is possible.
+
+```javascript
+const guard = {
+  canMelt: (fsm, from, to) => fsm.data.temperature > 0
+}
+```
+Multiple guards can be assigned to transition definitions or to states. Guards definded on states are for any trasition coming in or out of that state.

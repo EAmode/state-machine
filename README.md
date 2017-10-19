@@ -2,10 +2,10 @@
 [![NPM version](https://img.shields.io/npm/v/ea-state-machine.svg)](https://www.npmjs.org/package/ea-state-machine)
 [![Travis](https://img.shields.io/travis/eascientific/ea-state-machine/master.svg)](https://travis-ci.org/eascientific/ea-state-machine)
 
-A a reactive modern JavaScript library for general purpose finite state machines with support for navigation and routing.
+A reactive, modern JavaScript library for general purpose finite state machines with support for navigation and routing.
 
-<p align="left">
-  <img src="./doc/statemachine-matter.svg" width="450px">
+<p align="center">
+  <img src="./doc/statemachine-matter.svg" width="480px">
 </p>
 
 ## Overview

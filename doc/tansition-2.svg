@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="21cm" height="6cm" viewBox="119 128 406 108" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="120" y="179" width="80" height="36" rx="10" ry="10"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="120" y="179" width="80" height="36" rx="10" ry="10"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="160" y="201.8">
+      <tspan x="160" y="201.8">Step 1</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="281.5" y="181.3" width="80" height="36" rx="10" ry="10"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="281.5" y="181.3" width="80" height="36" rx="10" ry="10"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="321.5" y="204.1">
+      <tspan x="321.5" y="204.1">Step 2</tspan>
+    </text>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="321.5" y="199.3">
+    <tspan x="321.5" y="199.3"></tspan>
+  </text>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 291.921,175.261 A 107.897,107.897 0 0 0 182.853,178.008"/>
+    <polygon style="fill: #000000" points="298.345,179.081 287.261,177.618 292.133,174.878 292.865,169.335 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="298.345,179.081 287.261,177.618 292.133,174.878 292.865,169.335 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="443.5" y="184.3" width="80" height="36" rx="10" ry="10"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="443.5" y="184.3" width="80" height="36" rx="10" ry="10"/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="483.5" y="207.1">
+      <tspan x="483.5" y="207.1">Step 3</tspan>
+    </text>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 452.317,177.794 A 242.126,242.126 0 0 0 184.936,178.022"/>
+    <polygon style="fill: #000000" points="458.51,182.014 447.474,180.226 452.425,177.63 453.319,172.112 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="458.51,182.014 447.474,180.226 452.425,177.63 453.319,172.112 "/>
+  </g>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="173" y="141">
+    <tspan x="173" y="141">navigateTo</tspan>
+  </text>
+  <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="483.5" y="202.3">
+    <tspan x="483.5" y="202.3"></tspan>
+  </text>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 189.088,221.145 A 106.904,106.904 0 0 0 299.142,218.301"/>
+    <polygon style="fill: #000000" points="182.705,217.259 193.773,218.844 188.87,221.53 188.078,227.064 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="182.705,217.259 193.773,218.844 188.87,221.53 188.078,227.064 "/>
+  </g>
+  <g>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 345.947,218.297 A 115.619,115.619 0 0 0 447.812,225.332"/>
+    <polygon style="fill: #000000" points="454.646,222.298 448.016,231.301 447.967,225.711 443.466,222.396 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="454.646,222.298 448.016,231.301 447.967,225.711 443.466,222.396 "/>
+  </g>
+</svg>

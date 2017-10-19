@@ -26,14 +26,21 @@ Examples:
 ## Usage
 
 Using node/webpack/rollup/browserify:
+
 ```shell
-  npm install ea-state-machine
+npm install ea-state-machine
 ```
-```javascript
-import { FSM } from 'ea-state-machine'
+And, if you have not already, install the only peer dependency `rxjs`.
+
+```shell
+npm install rxjs
 ```
+
 Defining set of possible [States](doc/documentation.md#states).
-```javascript
+
+```js
+import { FSM } from 'ea-state-machine'
+
 const state = {
   solid: { name: 'Ice' },
   liquid: { name: 'Water' },

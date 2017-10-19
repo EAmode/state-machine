@@ -1,6 +1,0 @@
-# Design
-
-Most `routing` libraries in frontend frameworks have notions of state machines, but are often incomplete or are using a wrong abstraction. E. g.: A `route` is not a real route from `A` to `B`, but rather a `page`, which is better modeled as a `state`. Once you realize that, you can model "real" routes as a transition from one state to the other, which allows you to execute business logic when a user navigates from one page to another. Guards on transitions allow to control the flow of a user with a centralzed set of business rules.
-The reason that curent routing libraries are not fully supporting a state machine model is that users are often allowed to navigate from any page to any page and setting up all those transitions is too tedious. So guards are not on the transition, but more an entry condition to a page.
-This library overcomes this shortcomming of state machine with the addition of a `Transition Defintion`. This allows for the simple common case scenario as well as enableing to extent your page navigation with complex flow rules.
-Just using the abstation of this library allows to move this logic from an older framework toa new one. Write your routing logic once, run it everywhere!

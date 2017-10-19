@@ -32,21 +32,15 @@ Using node/webpack/rollup/browserify:
 ```javascript
 import { FSM } from 'ea-state-machine'
 ```
-Defining set of possible [States](/doc/states.md).
+Defining set of possible [States](doc/documentation.md#states).
 ```javascript
 const state = {
-  solid: { 
-    name: 'Ice'
-  },
-  liquid: { 
-    name: 'Water'
-  },
-  gas: { 
-    name: 'Vapor'
-  }
+  solid: { name: 'Ice' },
+  liquid: { name: 'Water' },
+  gas: { name: 'Vapor' }
 }
 ```
-[Guards](/doc/guards.md) prevent transitions by returning false
+[Guards](doc/documentation.md#guards) prevent transitions by returning false
 ```javascript
 const guard = {
   canMelt: (fsm, from, to) => fsm.data.temperature > 0,
@@ -55,7 +49,7 @@ const guard = {
   canFreeze: (fsm, from, to) => fsm.data.temperature >= 0
 }
 ```
-[Transition Definitions](/doc/transition-definitions.md) can be from many to many
+[Transition Definitions](doc/documentation.md#transitions) can be from many to many
 ```javascript
 const transitionDefiniton = {
     melt: {

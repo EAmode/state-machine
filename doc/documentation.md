@@ -24,9 +24,7 @@ Using this abstation of this library allows to move this logic from an older fra
 
 ## <a name="states"/> States
 
-<p align="center">
-  <img src="./statemachine-matter-simple.svg" width="400px">
-</p>
+<img src="./statemachine-matter-simple.svg" width="400px">
 
 An `ea-state-machine` consists of a finite set of states, e.g:
 
@@ -68,9 +66,8 @@ const state = {
 ## <a name="transitions"/> Transition Definitions
 
 A transition definition is a directed connection between one or many states.
-<p align="left">
-  <img src="./tansition-1.svg" width="400px">
-</p>
+
+<img src="./tansition-1.svg" width="400px">
 
 ```js
 const state = {
@@ -105,8 +102,9 @@ Transition From: Step 1 -> To: Step 3
 ```
 In this case, `Step 2` and `Step 3` are end states. Adding `state2` to `from` allows to continue to navigate to Step 1 and 3.
 
+<img src="./tansition-2.svg" width="400px">
+
 ```js
-// ...
 const transitionDefinition = {
   navigateTo: {
       from: () => [state.step1, state.step2],
@@ -115,7 +113,6 @@ const transitionDefinition = {
 ```
 Allowing to navigate from any state to any state is easy too:
 ```js
-// ...
 const transitionDefinition = {
   navigateTo: {
       from: (fsm) => [fsm.currentState],

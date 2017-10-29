@@ -5,25 +5,37 @@ const stepStateMachine = () => {
     step1: {
       name: 'Step 1',
       order: 1,
-      onEnter: () => { console.log('Entering Step 1!') },
-      onExit: () => { console.log('Leaving Step 1!') }
+      onEnter: () => {
+        console.log('Entering Step 1!')
+      },
+      onExit: () => {
+        console.log('Leaving Step 1!')
+      },
     },
     step2: {
       name: 'Step 2',
       order: 2,
-      onEnter: () => { console.log('Entering Step 2!') },
-      onExit: () => { console.log('Leaving Step 2!') }
+      onEnter: () => {
+        console.log('Entering Step 2!')
+      },
+      onExit: () => {
+        console.log('Leaving Step 2!')
+      },
     },
     step3: {
       name: 'Step 3',
       order: 3,
-      onEnter: () => { console.log('Entering Step 3!') },
-      onExit: () => { console.log('Leaving Step 3!') }
+      onEnter: () => {
+        console.log('Entering Step 3!')
+      },
+      onExit: () => {
+        console.log('Leaving Step 3!')
+      },
     },
   }
 
   const guard = {
-    leaveIfValid: (fsm, from, to) => !!from.valid
+    leaveIfValid: (fsm, from, to) => !!from.valid,
   }
 
   const transitionDefiniton = {
@@ -55,7 +67,7 @@ const stepStateMachine = () => {
         expect(from).toEqual(fsm.states.step1)
         expect(to).toEqual(fsm.states.step2)
       },
-    }
+    },
   }
 
   return Object.freeze({ state, transitionDefiniton })

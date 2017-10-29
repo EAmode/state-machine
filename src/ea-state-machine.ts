@@ -1,16 +1,16 @@
+import { find, map, minBy, unnest } from 'ramda'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Subject } from 'rxjs/Subject'
-import { unnest, map, minBy, find } from 'ramda'
+import { TransitionDefinitionNotExistsError, TransitionNotPossibleError } from './exceptions'
 import { State, Transition, TransitionFilter } from './types'
 
 export class FSM {
   static selection = {
     allPossible: (tansitions, currentState) => tansitions.filter(t => t.isPossible),
     firstNextState: (tansitions, currentState) => {
-      const selectedTransitions =
-        tansitions
-          .filter(t => t.isPossible && t.toState.order && t.toState.order > currentState.order)
-          .sort((tl, tr) => (tl.order && tr.order) ? tl.order - tr.order : 0)
+      const selectedTransitions = tansitions
+        .filter(t => t.isPossible && t.toState.order && t.toState.order > currentState.order)
+        .sort((tl, tr) => (tl.order && tr.order ? tl.order - tr.order : 0))
       if (selectedTransitions && selectedTransitions.length > 0) {
         return selectedTransitions[0]
       } else {
@@ -18,10 +18,9 @@ export class FSM {
       }
     },
     lastNextState: (tansitions, currentState) => {
-      const selectedTransitions =
-        tansitions
-          .filter(t => t.isPossible && t.toState.order && t.toState.order > currentState.order)
-          .sort((tl, tr) => (tl.order && tr.order) ? tl.order - tr.order : 0)
+      const selectedTransitions = tansitions
+        .filter(t => t.isPossible && t.toState.order && t.toState.order > currentState.order)
+        .sort((tl, tr) => (tl.order && tr.order ? tl.order - tr.order : 0))
       if (selectedTransitions && selectedTransitions.length > 0) {
         return selectedTransitions[selectedTransitions.length - 1]
       } else {
@@ -29,10 +28,9 @@ export class FSM {
       }
     },
     firstPreviousState: (tansitions, currentState) => {
-      const selectedTransitions =
-        tansitions
-          .filter(t => t.isPossible && t.toState.order && t.toState.order < currentState.order)
-          .sort((tl, tr) => (tl.order && tr.order) ? tl.order - tr.order : 0)
+      const selectedTransitions = tansitions
+        .filter(t => t.isPossible && t.toState.order && t.toState.order < currentState.order)
+        .sort((tl, tr) => (tl.order && tr.order ? tl.order - tr.order : 0))
       if (selectedTransitions && selectedTransitions.length > 0) {
         return selectedTransitions[0]
       } else {
@@ -40,10 +38,9 @@ export class FSM {
       }
     },
     allPreviousStates: (tansitions, currentState) => {
-      const selectedTransitions =
-        tansitions
-          .filter(t => t.isPossible && t.toState.order && t.toState.order < currentState.order)
-          .sort((tl, tr) => (tl.order && tr.order) ? tl.order - tr.order : 0)
+      const selectedTransitions = tansitions
+        .filter(t => t.isPossible && t.toState.order && t.toState.order < currentState.order)
+        .sort((tl, tr) => (tl.order && tr.order ? tl.order - tr.order : 0))
       if (selectedTransitions && selectedTransitions.length > 0) {
         return selectedTransitions
       } else {
@@ -55,16 +52,16 @@ export class FSM {
   static filter: { [key: string]: TransitionFilter } = {
     possibleTransitions: ts => ts.filter(t => t.failingGuards.length === 0),
     impossibleTransitions: ts => ts.filter(t => t.failingGuards.length !== 0),
-    minState: ts => [ts.reduce((prev, next) => (next.toState.order < prev.toState.order) ? next : prev)],
-    maxState: ts => [ts.reduce((prev, next) => (next.toState.order > prev.toState.order) ? next : prev)],
+    minState: ts => [ts.reduce((prev, next) => (next.toState.order < prev.toState.order ? next : prev))],
+    maxState: ts => [ts.reduce((prev, next) => (next.toState.order > prev.toState.order ? next : prev))],
   }
-  currentTransitions: Array<Transition>
+  currentTransitions: Transition[]
   possibleTransitionInstances$: Subject<any>
   transition$: Subject<any>
   currentState: State
 
   get valid() {
-    return (this.currentState.valid) ? true : false
+    return this.currentState.valid ? true : false
   }
 
   set valid(value) {
@@ -72,12 +69,7 @@ export class FSM {
     this.update()
   }
 
-  constructor(
-    public states,
-    public transitionDefinitions,
-    public startState: any = {},
-    public data = {}
-  ) {
+  constructor(public states, public transitionDefinitions, public startState: any = {}, public data = {}) {
     this.possibleTransitionInstances$ = new BehaviorSubject(null)
     this.transition$ = new BehaviorSubject(null)
     map(s => this.ensureStateValues(s), states)
@@ -89,21 +81,6 @@ export class FSM {
     }
     this.currentState = startState
     this.currentTransitions = this.possibleTransitionInstances()
-  }
-
-  private ensureStateValues(state) {
-    if (!state.count) {
-      state.count = 0
-    }
-    if (!state.order) {
-      state.order = 0
-    }
-    if (!state.valid) {
-      state.valid = false
-    }
-    if (!state.changed) {
-      state.changed = false
-    }
   }
 
   changeData(data) {
@@ -203,7 +180,7 @@ export class FSM {
     this.possibleTransitionInstances$.next(this.currentTransitions)
   }
 
-  checkGuards(transitionDefinition, fromState, toState): Array<any> {
+  checkGuards(transitionDefinition, fromState, toState): any[] {
     if (transitionDefinition.guards) {
       return transitionDefinition.guards.filter(guard => {
         const guardCondition = guard(this, fromState, toState)
@@ -230,10 +207,10 @@ export class FSM {
 
           return {
             fromState: this.currentState,
-            toState: toState,
+            toState,
             isPossible: failingGuards.length === 0,
             failingGuards,
-            transitionDefinition
+            transitionDefinition,
           }
         })
         if (transitionDefinition.select) {
@@ -251,26 +228,28 @@ export class FSM {
 
   possibleTransitionInstances() {
     const transactionInstances = []
-    // tslint:disable-next-line:forin
     for (const td in this.transitionDefinitions) {
-      transactionInstances.push(this.possibleTransitionInstancesFor(this.transitionDefinitions[td]))
+      if (this.transitionDefinitions.hasOwnProperty(td)) {
+        transactionInstances.push(this.possibleTransitionInstancesFor(this.transitionDefinitions[td]))
+      }
     }
     const un = unnest(transactionInstances)
 
     return un
   }
-}
 
-export class TransitionNotPossibleError extends Error {
-  constructor(m: string, public fsm = {}, public possibleTransitions = [], public impossibleTransitions = []) {
-    super(m)
-    Object.setPrototypeOf(this, TransitionNotPossibleError.prototype)
-  }
-}
-
-export class TransitionDefinitionNotExistsError extends Error {
-  constructor(m: string) {
-    super(m)
-    Object.setPrototypeOf(this, TransitionNotPossibleError.prototype)
+  private ensureStateValues(state) {
+    if (!state.count) {
+      state.count = 0
+    }
+    if (!state.order) {
+      state.order = 0
+    }
+    if (!state.valid) {
+      state.valid = false
+    }
+    if (!state.changed) {
+      state.changed = false
+    }
   }
 }

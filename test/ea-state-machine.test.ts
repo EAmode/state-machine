@@ -1,7 +1,5 @@
 import { FSM } from '../src/ea-state-machine'
 
-
-
 const h2oStateMachine = () => {
   const state = {
     solid: {
@@ -10,14 +8,19 @@ const h2oStateMachine = () => {
       order: 1,
       valid: true,
       changed: true,
-      onEnter: () => { console.log('Entering Ice State!') },
-      onExit: () => { console.log('Leaving Ice State!') }
+      // tslint:disable-next-line:no-console
+      onEnter: () => {
+        console.log('Entering Ice State!')
+      },
+      onExit: () => {
+        console.log('Leaving Ice State!')
+      },
     },
     liquid: {
-      name: 'Water'
+      name: 'Water',
     },
     gas: {
-      name: 'Vapor'
+      name: 'Vapor',
     },
   }
 
@@ -106,7 +109,6 @@ describe('FSM WITH start state', () => {
   it('Transitioning back to water with vaporizing should fail', () => {
     expect(() => fsm.transitionByDefinition(transitionDefiniton.vaporize)).toThrow()
   })
-
 })
 
 describe('FSM WITHOUT start state', () => {

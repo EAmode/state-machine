@@ -35,7 +35,7 @@ export interface TransitionDefinition {
   from: State | State[] | StateResolveFunc
   to: State | State[] | StateResolveFunc
   select?(transitions, fsm)
-  action(fsm: FSM)
+  action(fsm: FSM, from: State, to: State)
 }
 
 export type StateResolveFunc = (fsm: FSM) => State[]

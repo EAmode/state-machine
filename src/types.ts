@@ -34,9 +34,7 @@ export interface TransitionDefinition {
   guards?: Guard[]
   from: State | State[] | StateResolveFunc
   to: State | State[] | StateResolveFunc
-  // from(currentState: State): State[]
   select?(transitions, fsm)
-  // to(currentState: State): State[]
   action(fsm: FSM)
 }
 

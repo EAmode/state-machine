@@ -60,8 +60,8 @@ const guard = {
 ```javascript
 const transitionDefiniton = {
     melt: {
-      from: () => [state.solid],
-      to: () => [state.liquid],
+      from: state.solid, // can be a single state
+      to: [state.liquid], // or multiple targets 
       guards: [guard.canMelt],
       action: () => console.log('melting ...'),
     },

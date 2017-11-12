@@ -134,7 +134,6 @@ export class FSM {
     }
 
     // TODO: check if toState exists
-
     const failingGuards = this.checkGuards(
       transition.transitionDefinition,
       transition.fromState,

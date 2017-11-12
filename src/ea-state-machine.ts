@@ -1,4 +1,3 @@
-import { find, map, minBy, unnest } from 'ramda'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Subject } from 'rxjs/Subject'
 import { TransitionDefinitionNotExistsError, TransitionNotPossibleError } from './exceptions'
@@ -6,7 +5,7 @@ import { State, Transition, TransitionFilter } from './types'
 
 export class FSM {
   static selection = {
-    allPossible: (tansitions, currentState) => tansitions.filter(t => t.isPossible),
+    allPossible: tansitions => tansitions.filter(t => t.isPossible),
     firstNextState: (tansitions, currentState) => {
       const selectedTransitions = tansitions
         .filter(t => t.isPossible && t.toState.order && t.toState.order > currentState.order)
@@ -52,8 +51,12 @@ export class FSM {
   static filter: { [key: string]: TransitionFilter } = {
     possibleTransitions: ts => ts.filter(t => t.failingGuards.length === 0),
     impossibleTransitions: ts => ts.filter(t => t.failingGuards.length !== 0),
-    minState: ts => [ts.reduce((prev, next) => (next.toState.order < prev.toState.order ? next : prev))],
-    maxState: ts => [ts.reduce((prev, next) => (next.toState.order > prev.toState.order ? next : prev))],
+    minState: ts => [
+      ts.reduce((prev, next) => (next.toState.order < prev.toState.order ? next : prev)),
+    ],
+    maxState: ts => [
+      ts.reduce((prev, next) => (next.toState.order > prev.toState.order ? next : prev)),
+    ],
   }
   currentTransitions: Transition[]
   possibleTransitionInstances$: Subject<any>
@@ -69,10 +72,15 @@ export class FSM {
     this.update()
   }
 
-  constructor(public states, public transitionDefinitions, public startState: any = {}, public data = {}) {
+  constructor(
+    public states,
+    public transitionDefinitions,
+    public startState: any = {},
+    public data = {}
+  ) {
     this.possibleTransitionInstances$ = new BehaviorSubject(null)
     this.transition$ = new BehaviorSubject(null)
-    map(s => this.ensureStateValues(s), states)
+    Object.values(states).map(s => this.ensureStateValues(s))
     this.ensureStateValues(startState)
     startState.startState = true
     startState.count++
@@ -119,7 +127,11 @@ export class FSM {
 
     // TODO: check if toState exists
 
-    const failingGuards = this.checkGuards(transition.transitionDefinition, transition.fromState, transition.toState)
+    const failingGuards = this.checkGuards(
+      transition.transitionDefinition,
+      transition.fromState,
+      transition.toState
+    )
     if (failingGuards.length > 0) {
       throw new TransitionNotPossibleError('Transition not allowed by guards!', failingGuards)
     }
@@ -154,18 +166,24 @@ export class FSM {
   }
 
   transitionByDefinition(transitionDefinition, toState = null) {
-    const transitions = this.currentTransitions.filter(t => t.transitionDefinition === transitionDefinition)
+    const transitions = this.currentTransitions.filter(
+      t => t.transitionDefinition === transitionDefinition
+    )
     if (transitions.length === 0) {
       throw new TransitionNotPossibleError('Transition Definition not available for current state!')
     }
     let selectedTransition
     if (transitions.length > 1) {
       if (!toState) {
-        throw new TransitionNotPossibleError('Multiple possible toStates found and no toState specified!')
+        throw new TransitionNotPossibleError(
+          'Multiple possible toStates found and no toState specified!'
+        )
       } else {
         selectedTransition = this.currentTransitions.find(s => s === toState)
         if (!selectedTransition) {
-          throw new TransitionNotPossibleError('The specified toState can not be reached with this transition!')
+          throw new TransitionNotPossibleError(
+            'The specified toState can not be reached with this transition!'
+          )
         }
       }
     } else {
@@ -194,7 +212,9 @@ export class FSM {
 
   possibleTransitionInstancesFor(transitionDefinition) {
     if (!transitionDefinition) {
-      throw new TransitionDefinitionNotExistsError('Definition for this transition does not exists!')
+      throw new TransitionDefinitionNotExistsError(
+        'Definition for this transition does not exists!'
+      )
     }
     const fromStates = transitionDefinition.from(this.currentState)
 
@@ -216,7 +236,7 @@ export class FSM {
         if (transitionDefinition.select) {
           return transitionDefinition.select(allTransitions, this.currentState)
         } else {
-          return FSM.selection.allPossible(allTransitions, this.currentState)
+          return FSM.selection.allPossible(allTransitions)
         }
       } else {
         return []
@@ -230,12 +250,20 @@ export class FSM {
     const transactionInstances = []
     for (const td in this.transitionDefinitions) {
       if (this.transitionDefinitions.hasOwnProperty(td)) {
-        transactionInstances.push(this.possibleTransitionInstancesFor(this.transitionDefinitions[td]))
+        const possibleInstances = this.possibleTransitionInstancesFor(
+          this.transitionDefinitions[td]
+        )
+        if (possibleInstances instanceof Array) {
+          possibleInstances.forEach(i => {
+            transactionInstances.push(i)
+          })
+        } else {
+          transactionInstances.push(possibleInstances)
+        }
       }
     }
-    const un = unnest(transactionInstances)
 
-    return un
+    return transactionInstances
   }
 
   private ensureStateValues(state) {

@@ -7,7 +7,12 @@ export class TransitionDefinitionNotExistsError extends Error {
 
 // tslint:disable-next-line:max-classes-per-file
 export class TransitionNotPossibleError extends Error {
-  constructor(m: string, public fsm = {}, public possibleTransitions = [], public impossibleTransitions = []) {
+  constructor(
+    m: string,
+    public fsm = {},
+    public possibleTransitions = [],
+    public impossibleTransitions = []
+  ) {
     super(m)
     Object.setPrototypeOf(this, TransitionNotPossibleError.prototype)
   }

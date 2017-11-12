@@ -1,7 +1,15 @@
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Subject } from 'rxjs/Subject'
 import { TransitionDefinitionNotExistsError, TransitionNotPossibleError } from './exceptions'
-import { State, Transition, TransitionFilter } from './types'
+import {
+  State,
+  StateMap,
+  StateResolveFunc,
+  Transition,
+  TransitionDefinition,
+  TransitionDefinitionMap,
+  TransitionFilter,
+} from './types'
 
 export class FSM {
   static selection = {
@@ -73,8 +81,8 @@ export class FSM {
   }
 
   constructor(
-    public states,
-    public transitionDefinitions,
+    public states: StateMap,
+    public transitionDefinitions: TransitionDefinitionMap,
     public startState: any = {},
     public data = {}
   ) {
@@ -210,16 +218,27 @@ export class FSM {
     return []
   }
 
-  possibleTransitionInstancesFor(transitionDefinition) {
+  resolveState(stateMapping: State | State[] | StateResolveFunc): State[] {
+    const type = Object.prototype.toString.call(stateMapping)
+    if (type === '[object Object]') {
+      return [stateMapping as State]
+    } else if (type === '[object Array]') {
+      return stateMapping as State[]
+    } else {
+      return (stateMapping as StateResolveFunc)(this)
+    }
+  }
+
+  possibleTransitionInstancesFor(transitionDefinition: TransitionDefinition) {
     if (!transitionDefinition) {
       throw new TransitionDefinitionNotExistsError(
         'Definition for this transition does not exists!'
       )
     }
-    const fromStates = transitionDefinition.from(this.currentState)
+    const fromStates = this.resolveState(transitionDefinition.from)
 
     if (fromStates.includes(this.currentState)) {
-      const toStates = transitionDefinition.to(this.currentState)
+      const toStates = this.resolveState(transitionDefinition.to)
 
       if (toStates) {
         const allTransitions = toStates.map(toState => {
@@ -247,7 +266,7 @@ export class FSM {
   }
 
   possibleTransitionInstances() {
-    const transactionInstances = []
+    const transactionInstances: Transition[] = []
     for (const td in this.transitionDefinitions) {
       if (this.transitionDefinitions.hasOwnProperty(td)) {
         const possibleInstances = this.possibleTransitionInstancesFor(
@@ -266,7 +285,7 @@ export class FSM {
     return transactionInstances
   }
 
-  private ensureStateValues(state) {
+  private ensureStateValues(state: State) {
     if (!state.count) {
       state.count = 0
     }

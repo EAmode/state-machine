@@ -1,4 +1,5 @@
 import { FSM } from '../src/ea-state-machine'
+import { TransitionDefinitionMap } from '../src/types'
 
 const h2oStateMachine = () => {
   const state = {
@@ -31,10 +32,10 @@ const h2oStateMachine = () => {
     canFreeze: (fsm, from, to) => fsm.data.temperature >= 0,
   }
 
-  const transitionDefiniton = {
+  const transitionDefiniton: TransitionDefinitionMap = {
     melt: {
-      from: () => [state.solid],
-      to: () => [state.liquid],
+      from: state.solid,
+      to: [state.liquid],
       guards: [guard.canMelt],
       action: () => console.log('melting ...'),
     },

@@ -8,18 +8,19 @@ const libraryName = 'ea-state-machine'
 
 export default {
   input: `compiled/${libraryName}.js`,
-  output: [{
+  output: [
+    {
       file: pkg.main,
       name: camelCase(libraryName),
-      format: 'umd'
+      format: 'umd',
     },
     {
       file: pkg.module,
-      format: 'es'
-    }
+      format: 'es',
+    },
   ],
   sourcemap: true,
-  onwarn: (warning) => {
+  onwarn: warning => {
     // Suppress this error message... there are hundreds of them. Angular team says to ignore it.
     // https://github.com/rollup/rollup/wiki/Troubleshooting#this-is-undefined
     if (warning.code === 'THIS_IS_UNDEFINED') {
@@ -33,8 +34,8 @@ export default {
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
     commonjs({
       namedExports: {
-        "node_modules/ramda/index.js": ["map", "minBy", "find", "allPass", "unnest"]
-      }
+        'node_modules/ramda/index.js': ['map', 'minBy', 'find', 'allPass', 'unnest'],
+      },
     }),
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
@@ -42,6 +43,6 @@ export default {
     resolve(),
 
     // Resolve source maps to the original source
-    sourceMaps()
-  ]
+    sourceMaps(),
+  ],
 }

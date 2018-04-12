@@ -1,7 +1,7 @@
-import { fork } from 'child_process'
-import colors from 'colors'
-import { readFileSync, writeFileSync } from 'fs'
-import path from 'path'
+const { fork } = require('child_process')
+const colors = require('colors')
+const { readFileSync, writeFileSync } = require('fs')
+const path = require('path')
 
 const pkg = JSON.parse(readFileSync(path.resolve(__dirname, '..', 'package.json')) as any)
 

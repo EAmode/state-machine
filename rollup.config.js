@@ -13,13 +13,14 @@ export default {
       file: pkg.main,
       name: camelCase(libraryName),
       format: 'umd',
+      sourcemap: true
     },
     {
       file: pkg.module,
       format: 'es',
+      sourcemap: true
     },
   ],
-  sourcemap: true,
   onwarn: warning => {
     // Suppress this error message... there are hundreds of them. Angular team says to ignore it.
     // https://github.com/rollup/rollup/wiki/Troubleshooting#this-is-undefined

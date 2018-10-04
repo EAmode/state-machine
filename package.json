@@ -33,7 +33,7 @@
     "deploy-docs": "node tools/gh-pages-publish.js",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "commit": "git-cz",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "semantic-release": "semantic-release",
     "semantic-release-prepare": "node tools/semantic-release-prepare.js",
     "precommit": "npm run format && lint-staged",
     "prepush": "npm run test:prod && npm run build",

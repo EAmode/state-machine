@@ -34,10 +34,6 @@ const stepStateMachine = () => {
     },
   }
 
-  const guard = {
-    leaveIfValid: (fsm, from, to) => !!from.valid,
-  }
-
   const transitionDefiniton = {
     continueToNextStep: {
       from: () => [state.step1],

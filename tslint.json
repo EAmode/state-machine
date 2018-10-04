@@ -2,7 +2,6 @@
   "extends": "tslint:recommended",
   "rules": {
     "arrow-parens": false,
-    "import-blacklist": [true, "rxjs"],
     "member-access": false,
     "no-inferrable-types": true,
     "no-non-null-assertion": true,

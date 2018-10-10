@@ -91,10 +91,17 @@ export class FSM {
     startState.isStartState = true
     startState.count++
     this.currentState = startState
-    if (startState.onEnter) {
-      startState.onEnter(this, null, null)
-    }
+
     this.currentTransitions = this.possibleTransitionInstances()
+  }
+
+  initialize(data) {
+    const { startState } = this
+    this.data = data
+    startState.count++
+    if (startState.onEnter) {
+      startState.onEnter(this, null, startState)
+    }
   }
 
   changeData(data) {

@@ -25,6 +25,7 @@ export interface Transition {
   failingGuards: Guard[]
   fromState: State
   toState: State
+  data?: any
   transitionDefinition: TransitionDefinition
 }
 export interface TransitionDefinitionMap {

@@ -83,7 +83,7 @@ export class FSM {
     public states: StateMap,
     public transitionDefinitions: TransitionDefinitionMap,
     public startState: State = { name: '' },
-    public data = {}
+    public data: any = {}
   ) {
     this.possibleTransitionInstances$ = new Subject()
     Object.values(states).map(s => this.ensureStateValues(s))
@@ -128,16 +128,59 @@ export class FSM {
     return this.currentTransitions.find(t => t.toState === state) ? true : false
   }
 
-  transitionTo(toState) {
+  transitionTo(toState, data?) {
     const firstpossibleTransition = this.currentTransitions.find(t => t.toState === toState)
     if (firstpossibleTransition) {
-      this.transition(firstpossibleTransition)
+      this.transition(firstpossibleTransition, data)
     } else {
       throw new TransitionNotPossibleError('Transition is not available to this state!')
     }
   }
 
-  transition(transition: Transition) {
+  transitionByFilter(filter: TransitionFilter, data?) {
+    const transitions = filter(FSM.filter.possibleTransitions(this.currentTransitions), this)
+    if (transitions.length === 0) {
+      throw new TransitionNotPossibleError(
+        'Transition Filter has no transitions for current state!',
+        this,
+        FSM.filter.possibleTransitions(this.currentTransitions),
+        FSM.filter.impossibleTransitions(this.currentTransitions)
+      )
+    }
+    this.transition(transitions[0], data)
+  }
+
+  transitionByDefinition(transitionDefinition, toState = null, data?) {
+    const transitions = this.currentTransitions.filter(
+      t => t.transitionDefinition === transitionDefinition
+    )
+    if (transitions.length === 0) {
+      throw new TransitionNotPossibleError('Transition Definition not available for current state!')
+    }
+    let selectedTransition
+    if (transitions.length > 1) {
+      if (!toState) {
+        throw new TransitionNotPossibleError(
+          'Multiple possible toStates found and no toState specified!'
+        )
+      } else {
+        selectedTransition = this.currentTransitions.find(s => s === toState)
+        if (!selectedTransition) {
+          throw new TransitionNotPossibleError(
+            'The specified toState can not be reached with this transition!'
+          )
+        }
+      }
+    } else {
+      selectedTransition = transitions[0]
+    }
+    this.transition(selectedTransition, data)
+  }
+
+  transition(transition: Transition, data?) {
+    if (data) {
+      transition.data = data
+    }
     if (transition.fromState !== this.currentState) {
       throw new TransitionNotPossibleError('Transition is not available for this current state!')
     }
@@ -166,46 +209,6 @@ export class FSM {
     transition.fromState.changed = false
     this.update()
     this.transition$.next(transition)
-  }
-
-  transitionByFilter(filter: TransitionFilter) {
-    const transitions = filter(FSM.filter.possibleTransitions(this.currentTransitions), this)
-    if (transitions.length === 0) {
-      throw new TransitionNotPossibleError(
-        'Transition Filter has no transitions for current state!',
-        this,
-        FSM.filter.possibleTransitions(this.currentTransitions),
-        FSM.filter.impossibleTransitions(this.currentTransitions)
-      )
-    }
-    this.transition(transitions[0])
-  }
-
-  transitionByDefinition(transitionDefinition, toState = null) {
-    const transitions = this.currentTransitions.filter(
-      t => t.transitionDefinition === transitionDefinition
-    )
-    if (transitions.length === 0) {
-      throw new TransitionNotPossibleError('Transition Definition not available for current state!')
-    }
-    let selectedTransition
-    if (transitions.length > 1) {
-      if (!toState) {
-        throw new TransitionNotPossibleError(
-          'Multiple possible toStates found and no toState specified!'
-        )
-      } else {
-        selectedTransition = this.currentTransitions.find(s => s === toState)
-        if (!selectedTransition) {
-          throw new TransitionNotPossibleError(
-            'The specified toState can not be reached with this transition!'
-          )
-        }
-      }
-    } else {
-      selectedTransition = transitions[0]
-    }
-    this.transition(selectedTransition)
   }
 
   update() {

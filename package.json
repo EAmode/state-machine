@@ -1,6 +1,6 @@
 {
   "name": "ea-state-machine",
-  "version": "1.6.1",
+  "version": "2.2.1",
   "description": "",
   "keywords": [],
   "main": "dist/ea-state-machine.umd.js",

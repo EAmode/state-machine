@@ -1,4 +1,4 @@
-import { BehaviorSubject, Subject } from 'rxjs'
+import { Subject } from 'rxjs'
 import { TransitionDefinitionNotExistsError, TransitionNotPossibleError } from './exceptions'
 import {
   State,
@@ -67,7 +67,7 @@ export class FSM {
   }
   currentTransitions: Transition[]
   possibleTransitionInstances$: Subject<any>
-  transition$: Subject<any>
+  transition$ = new Subject<Transition>()
   currentState: State
 
   get valid() {
@@ -82,20 +82,26 @@ export class FSM {
   constructor(
     public states: StateMap,
     public transitionDefinitions: TransitionDefinitionMap,
-    public startState: any = {},
+    public startState: State = { name: '' },
     public data = {}
   ) {
-    this.possibleTransitionInstances$ = new BehaviorSubject(null)
-    this.transition$ = new BehaviorSubject(null)
+    this.possibleTransitionInstances$ = new Subject()
     Object.values(states).map(s => this.ensureStateValues(s))
     this.ensureStateValues(startState)
-    startState.startState = true
+    startState.isStartState = true
+    startState.count++
+    this.currentState = startState
+
+    this.currentTransitions = this.possibleTransitionInstances()
+  }
+
+  initialize(data) {
+    const { startState } = this
+    this.data = data
     startState.count++
     if (startState.onEnter) {
-      startState.onEnter()
+      startState.onEnter(this, null, startState)
     }
-    this.currentState = startState
-    this.currentTransitions = this.possibleTransitionInstances()
   }
 
   changeData(data) {
@@ -114,6 +120,10 @@ export class FSM {
     this.changeStateData(this.currentState, data)
   }
 
+  canTransition() {
+    return this.currentTransitions.length > 0
+  }
+
   canTransitionTo(state: State) {
     return this.currentTransitions.find(t => t.toState === state) ? true : false
   }
@@ -127,7 +137,7 @@ export class FSM {
     }
   }
 
-  transition(transition) {
+  transition(transition: Transition) {
     if (transition.fromState !== this.currentState) {
       throw new TransitionNotPossibleError('Transition is not available for this current state!')
     }
@@ -143,14 +153,14 @@ export class FSM {
     }
 
     if (transition.fromState.onExit) {
-      transition.fromState.onExit(this)
+      transition.fromState.onExit(this, transition.fromState, transition.toState)
     }
     if (transition.transitionDefinition.action) {
       transition.transitionDefinition.action(this, transition.fromState, transition.toState)
     }
     this.currentState = transition.toState
     if (transition.toState.onEnter) {
-      transition.toState.onEnter(this.states)
+      transition.toState.onEnter(this, transition.fromState, transition.toState)
     }
     transition.toState.count++
     transition.fromState.changed = false
@@ -223,7 +233,8 @@ export class FSM {
     } else if (type === '[object Array]') {
       return stateMapping as State[]
     } else {
-      return (stateMapping as StateResolveFunc)(this)
+      const result = (stateMapping as StateResolveFunc)(this)
+      return result instanceof Array ? result : [result]
     }
   }
 

@@ -4,9 +4,15 @@ export interface State {
   name: string
   count?: number
   order?: number
+  isStartState?: boolean
   valid?: boolean
   changed?: boolean
   data?: any
+  path?: string
+  component?: any
+  onEnter?: StateMachineFunc
+  onExit?: StateMachineFunc
+  apply?: never
 }
 
 export interface StateMap {
@@ -34,11 +40,13 @@ export interface TransitionDefinition {
   guards?: Guard[]
   from: State | State[] | StateResolveFunc
   to: State | State[] | StateResolveFunc
+  action?: StateMachineFunc
   select?(transitions, fsm)
-  action(fsm: FSM, from: State, to: State)
 }
 
-export type StateResolveFunc = (fsm: FSM) => State[]
+export type StateResolveFunc = (fsm: FSM) => State | State[]
+
+export type StateMachineFunc = (fsm: FSM, from: State, to: State) => void
 
 export interface Guard {
   (allStates: string, to: number, order: number, valid: boolean, data?: any)

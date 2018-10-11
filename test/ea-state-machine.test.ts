@@ -122,10 +122,11 @@ describe('FSM WITHOUT start state', () => {
     const { state, transitionDefiniton } = h2oStateMachine()
     const fsm = new FSM(state, transitionDefiniton)
     expect(fsm.currentState).toEqual({
+      name: '',
       changed: false,
       count: 1,
       order: 0,
-      startState: true,
+      isStartState: true,
       valid: false,
       data: {},
     })

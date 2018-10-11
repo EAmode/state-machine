@@ -296,5 +296,8 @@ export class FSM {
     if (!state.changed) {
       state.changed = false
     }
+    if (!state.data) {
+      state.data = {}
+    }
   }
 }

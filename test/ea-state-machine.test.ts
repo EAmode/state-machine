@@ -127,6 +127,7 @@ describe('FSM WITHOUT start state', () => {
       order: 0,
       startState: true,
       valid: false,
+      data: {},
     })
   })
 })

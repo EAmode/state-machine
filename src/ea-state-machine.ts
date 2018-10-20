@@ -98,7 +98,6 @@ export class FSM {
   initialize(data) {
     const { startState } = this
     this.data = data
-    startState.count++
     if (startState.onEnter) {
       startState.onEnter(this, null, startState)
     }

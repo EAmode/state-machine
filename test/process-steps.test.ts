@@ -56,12 +56,13 @@ const stepStateMachine = () => {
     firstToSecond: {
       from: () => [state.step1],
       to: () => [state.step2],
-      action: (fsm, from, to) => {
+      action: transition => {
+        const { fsm, fromState, toState } = transition
         console.log('stepping forward from step 1 to step 2 ...')
         expect(fsm.currentState).toEqual(fsm.states.step1)
         expect(fsm.currentState).toEqual(state.step1)
-        expect(from).toEqual(fsm.states.step1)
-        expect(to).toEqual(fsm.states.step2)
+        expect(fromState).toEqual(fsm.states.step1)
+        expect(toState).toEqual(fsm.states.step2)
       },
     },
   }

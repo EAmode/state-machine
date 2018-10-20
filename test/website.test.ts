@@ -69,6 +69,13 @@ describe('Website', () => {
   const { startState, state, transitionDefinition } = stepStateMachine()
   const fsm = new FSM(state, transitionDefinition, startState)
 
+  test('initializes FSM and moves into start state', () => {
+    fsm.initialize({ name: 'website name' })
+    expect(fsm.currentState).toEqual(startState)
+    expect(fsm.data.name).toEqual('website name')
+    expect(fsm.currentState.count).toEqual(1)
+  })
+
   test('transition$ emits transitions', done => {
     expect(fsm.currentState).toEqual(startState)
     fsm.transition$.subscribe(t => {

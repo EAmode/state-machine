@@ -27,6 +27,7 @@ export interface Transition {
   toState: State
   data?: any
   transitionDefinition: TransitionDefinition
+  fsm: FSM
 }
 export interface TransitionDefinitionMap {
   [index: string]: TransitionDefinition
@@ -41,7 +42,7 @@ export interface TransitionDefinition {
   guards?: Guard[]
   from: State | State[] | StateResolveFunc
   to: State | State[] | StateResolveFunc
-  action?: StateMachineFunc
+  action?: (t: Transition) => void
   select?(transitions, fsm)
 }
 

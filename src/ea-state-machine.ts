@@ -178,6 +178,7 @@ export class FSM {
   }
 
   transition(transition: Transition, data?) {
+    transition.fsm = this
     if (data) {
       transition.data = data
     }
@@ -199,7 +200,7 @@ export class FSM {
       transition.fromState.onExit(this, transition.fromState, transition.toState)
     }
     if (transition.transitionDefinition.action) {
-      transition.transitionDefinition.action(this, transition.fromState, transition.toState)
+      transition.transitionDefinition.action(transition)
     }
     this.currentState = transition.toState
     if (transition.toState.onEnter) {

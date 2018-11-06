@@ -25,6 +25,8 @@ export interface Transition {
   failingGuards: Guard[]
   fromState: State
   toState: State
+  order?: number
+  isPossible?: boolean
   data?: any
   transitionDefinition: TransitionDefinition
   fsm: FSM
@@ -54,4 +56,9 @@ export interface Guard {
   (allStates: string, to: number, order: number, valid: boolean, data?: any)
 }
 
-export type TransitionFilter = (tansitions: Transition[], fsm?: FSM) => Transition[]
+export type TransitionFilter = (tansitions: Transition[], fsm?: FSM, data?: any) => Transition[]
+
+export interface TransitionFilterMap {
+  [index: string]: TransitionFilter
+  [index: number]: TransitionFilter
+}

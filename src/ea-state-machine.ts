@@ -8,44 +8,45 @@ import {
   TransitionDefinition,
   TransitionDefinitionMap,
   TransitionFilter,
+  TransitionFilterMap,
 } from './types'
 
 export class FSM {
-  static selection = {
+  static selection: TransitionFilterMap = {
     allPossible: tansitions => tansitions.filter(t => t.isPossible),
-    firstNextState: (tansitions, currentState) => {
+    firstNextState: (tansitions, fsm) => {
       const selectedTransitions = tansitions
-        .filter(t => t.isPossible && t.toState.order && t.toState.order > currentState.order)
+        .filter(t => t.isPossible && t.toState.order && t.toState.order > fsm.currentState.order)
         .sort((tl, tr) => (tl.order && tr.order ? tl.order - tr.order : 0))
       if (selectedTransitions && selectedTransitions.length > 0) {
-        return selectedTransitions[0]
+        return [selectedTransitions[0]]
       } else {
         return []
       }
     },
-    lastNextState: (tansitions, currentState) => {
+    lastNextState: (tansitions, fsm) => {
       const selectedTransitions = tansitions
-        .filter(t => t.isPossible && t.toState.order && t.toState.order > currentState.order)
+        .filter(t => t.isPossible && t.toState.order && t.toState.order > fsm.currentState.order)
         .sort((tl, tr) => (tl.order && tr.order ? tl.order - tr.order : 0))
       if (selectedTransitions && selectedTransitions.length > 0) {
-        return selectedTransitions[selectedTransitions.length - 1]
+        return [selectedTransitions[selectedTransitions.length - 1]]
       } else {
         return []
       }
     },
-    firstPreviousState: (tansitions, currentState) => {
+    firstPreviousState: (tansitions, fsm) => {
       const selectedTransitions = tansitions
-        .filter(t => t.isPossible && t.toState.order && t.toState.order < currentState.order)
+        .filter(t => t.isPossible && t.toState.order && t.toState.order < fsm.currentState.order)
         .sort((tl, tr) => (tl.order && tr.order ? tl.order - tr.order : 0))
       if (selectedTransitions && selectedTransitions.length > 0) {
-        return selectedTransitions[0]
+        return [selectedTransitions[0]]
       } else {
         return []
       }
     },
-    allPreviousStates: (tansitions, currentState) => {
+    allPreviousStates: (tansitions, fsm) => {
       const selectedTransitions = tansitions
-        .filter(t => t.isPossible && t.toState.order && t.toState.order < currentState.order)
+        .filter(t => t.isPossible && t.toState.order && t.toState.order < fsm.currentState.order)
         .sort((tl, tr) => (tl.order && tr.order ? tl.order - tr.order : 0))
       if (selectedTransitions && selectedTransitions.length > 0) {
         return selectedTransitions
@@ -137,7 +138,7 @@ export class FSM {
   }
 
   transitionByFilter(filter: TransitionFilter, data?) {
-    const transitions = filter(FSM.filter.possibleTransitions(this.currentTransitions), this)
+    const transitions = filter(FSM.filter.possibleTransitions(this.currentTransitions), this, data)
     if (transitions.length === 0) {
       throw new TransitionNotPossibleError(
         'Transition Filter has no transitions for current state!',
@@ -263,9 +264,9 @@ export class FSM {
             failingGuards,
             transitionDefinition,
           }
-        })
+        }) as Transition[]
         if (transitionDefinition.select) {
-          return transitionDefinition.select(allTransitions, this.currentState)
+          return transitionDefinition.select(allTransitions, this)
         } else {
           return FSM.selection.allPossible(allTransitions)
         }

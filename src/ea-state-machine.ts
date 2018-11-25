@@ -98,7 +98,7 @@ export class FSM {
 
   initialize(data) {
     const { startState } = this
-    this.data = data
+    this.data = { ...this.data, ...data }
     if (startState.onEnter) {
       startState.onEnter(this, null, startState)
     }
@@ -190,7 +190,8 @@ export class FSM {
     const failingGuards = this.checkGuards(
       transition.transitionDefinition,
       transition.fromState,
-      transition.toState
+      transition.toState,
+      transition.data
     )
     if (failingGuards.length > 0) {
       throw new TransitionNotPossibleError('Transition not allowed by guards!', failingGuards)
@@ -218,10 +219,10 @@ export class FSM {
     this.possibleTransitionInstances$.next(this.currentTransitions)
   }
 
-  checkGuards(transitionDefinition, fromState, toState): any[] {
+  checkGuards(transitionDefinition, fromState, toState, transitionData = null): any[] {
     if (transitionDefinition.guards) {
       return transitionDefinition.guards.filter(guard => {
-        const guardCondition = guard(this, fromState, toState)
+        const guardCondition = guard(this, fromState, toState, transitionData)
         if (guardCondition !== undefined && guardCondition === false) {
           return true
         }

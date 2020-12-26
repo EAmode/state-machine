@@ -6,7 +6,7 @@ const stepStateMachine = () => {
     name: 'Start State',
     path: '',
     component: { name: 'Start Component' },
-    onEnter: fsm => {
+    onEnter: (fsm) => {
       console.log(fsm.currentState.name + ' entered')
     },
   }
@@ -16,10 +16,10 @@ const stepStateMachine = () => {
       name: 'Application View',
       path: 'application/:id',
       component: { name: 'Application View Component' },
-      onEnter: fsm => {
+      onEnter: (fsm) => {
         console.log(fsm.currentState.name + ' entered')
       },
-      onExit: fsm => {
+      onExit: (fsm) => {
         console.log(fsm.currentState.name + ' exited')
       },
     },
@@ -27,10 +27,10 @@ const stepStateMachine = () => {
       name: 'Entity View',
       path: 'entity/:id',
       component: { name: 'Entity View Component' },
-      onEnter: fsm => {
+      onEnter: (fsm) => {
         console.log(fsm.currentState.name + ' entered')
       },
-      onExit: fsm => {
+      onExit: (fsm) => {
         console.log(fsm.currentState.name + ' exited')
       },
     },
@@ -38,10 +38,10 @@ const stepStateMachine = () => {
       name: 'Document View',
       path: 'document/:id',
       component: { name: 'Entity View Component' },
-      onEnter: fsm => {
+      onEnter: (fsm) => {
         console.log(fsm.currentState.name + ' entered')
       },
-      onExit: fsm => {
+      onExit: (fsm) => {
         console.log(fsm.currentState.name + ' exited')
       },
     },
@@ -76,9 +76,9 @@ describe('Website', () => {
     expect(fsm.currentState.count).toEqual(1)
   })
 
-  test('transition$ emits transitions', done => {
+  test('transition$ emits transitions', (done) => {
     expect(fsm.currentState).toEqual(startState)
-    fsm.transition$.subscribe(t => {
+    fsm.transition$.subscribe((t) => {
       expect(t).toBeTruthy()
       if (t.transitionDefinition === transitionDefinition.initialize) {
         expect(t.toState).toBe(state.application)

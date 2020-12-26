@@ -56,7 +56,7 @@ const stepStateMachine = () => {
     firstToSecond: {
       from: () => [state.step1],
       to: () => [state.step2],
-      action: transition => {
+      action: (transition) => {
         const { fsm, fromState, toState } = transition
         console.log('stepping forward from step 1 to step 2 ...')
         expect(fsm.currentState).toEqual(fsm.states.step1)
@@ -93,7 +93,7 @@ describe('Stepping with continue', () => {
     expect(fsm.currentState).toEqual(state.step3)
   })
   it('Cannot jump to non existing state', () => {
-    const selectNonExisting = ts => ts.filter(t => t.toState.name === 'Non existing')
+    const selectNonExisting = (ts) => ts.filter((t) => t.toState.name === 'Non existing')
     try {
       fsm.transitionByFilter(selectNonExisting)
     } catch (e) {
@@ -103,7 +103,7 @@ describe('Stepping with continue', () => {
     }
   })
   it('Can jump by Filter back to step 1', () => {
-    const step1 = ts => ts.filter(t => t.toState.order === 1)
+    const step1 = (ts) => ts.filter((t) => t.toState.order === 1)
     fsm.transitionByFilter(step1)
     expect(fsm.currentState).toEqual(state.step1)
   })

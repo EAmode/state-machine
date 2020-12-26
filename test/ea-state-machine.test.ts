@@ -26,10 +26,10 @@ const h2oStateMachine = () => {
   }
 
   const guard = {
-    canMelt: fsm => fsm.data.temperature > 0,
-    canVaporize: fsm => fsm.data.temperature > 100,
-    canCondense: fsm => fsm.data.temperature < 100,
-    canFreeze: fsm => fsm.data.temperature >= 0,
+    canMelt: (fsm) => fsm.data.temperature > 0,
+    canVaporize: (fsm) => fsm.data.temperature > 100,
+    canCondense: (fsm) => fsm.data.temperature < 100,
+    canFreeze: (fsm) => fsm.data.temperature >= 0,
   }
 
   const transitionDefiniton: TransitionDefinitionMap = {

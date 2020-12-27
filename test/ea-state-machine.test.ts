@@ -1,5 +1,5 @@
 import { FSM } from '../src/ea-state-machine'
-import { TransitionDefinitionMap } from '../src/types'
+import { Guard, TransitionDefinitionMap } from '../src/types'
 
 const h2oStateMachine = () => {
   const state = {
@@ -25,7 +25,11 @@ const h2oStateMachine = () => {
     },
   }
 
-  const guard = {
+  interface MyType {
+    [key: string]: Guard;
+}
+
+const guard: {[key: string]: Guard} = {
     canMelt: (fsm) => fsm.data.temperature > 0,
     canVaporize: (fsm) => fsm.data.temperature > 100,
     canCondense: (fsm) => fsm.data.temperature < 100,

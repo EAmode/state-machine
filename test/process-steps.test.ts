@@ -1,4 +1,5 @@
 import { FSM } from '../src/ea-state-machine'
+import { TransitionDefinitionMap, TransitionFilter } from '../src/types'
 
 const stepStateMachine = () => {
   const state = {
@@ -34,7 +35,7 @@ const stepStateMachine = () => {
     },
   }
 
-  const transitionDefiniton = {
+  const transitionDefiniton: TransitionDefinitionMap = {
     continueToNextStep: {
       from: () => [state.step1],
       to: () => [state.step2, state.step3],
@@ -93,17 +94,18 @@ describe('Stepping with continue', () => {
     expect(fsm.currentState).toEqual(state.step3)
   })
   it('Cannot jump to non existing state', () => {
-    const selectNonExisting = (ts) => ts.filter((t) => t.toState.name === 'Non existing')
+    const selectNonExisting: TransitionFilter = (ts) =>
+      ts.filter((t) => t.toState.name === 'Non existing')
     try {
       fsm.transitionByFilter(selectNonExisting)
     } catch (e) {
       expect(e.fsm).toBe(fsm)
-      expect(e.possibleTransitions.length).toEqual(1)
+      expect(e.possibleTransitions).toEqual(undefined)
       expect(e.impossibleTransitions.length).toEqual(0)
     }
   })
   it('Can jump by Filter back to step 1', () => {
-    const step1 = (ts) => ts.filter((t) => t.toState.order === 1)
+    const step1: TransitionFilter = (ts) => ts.filter((t) => t.toState.order === 1)
     fsm.transitionByFilter(step1)
     expect(fsm.currentState).toEqual(state.step1)
   })

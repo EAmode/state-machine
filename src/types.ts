@@ -53,7 +53,7 @@ export type StateResolveFunc = (fsm: FSM) => State | State[]
 export type StateMachineFunc = (fsm: FSM, from: State, to: State) => void
 
 export interface Guard {
-  (allStates: string, to: number, order: number, valid: boolean, data?: any): any
+  (fsm: FSM, from: State, to: State, data?: any): any
 }
 
 export type TransitionFilter = (tansitions: Transition[], fsm: FSM, data?: any) => Transition[]

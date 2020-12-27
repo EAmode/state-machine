@@ -25,7 +25,7 @@
     "format": "prettier --write **/*.ts",
     "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "tsc && rollup -c && rimraf compiled && typedoc --out dist/docs --target es6 --mode file --theme minimal src",
+    "build": "rollup -c && typedoc --out dist/docs --target es6 --mode file --theme minimal src",
     "start": "tsc-watch --onSuccess \"rollup -c\"",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -78,6 +78,7 @@
     }
   },
   "devDependencies": {
+    "@rollup/plugin-typescript": "^8.1.0",
     "@types/jest": "^26.0.19",
     "@types/node": "^14.14.16",
     "colors": "^1.4.0",
@@ -95,6 +96,7 @@
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
+    "roolup": "^1.0.4",
     "semantic-release": "^17.3.0",
     "ts-jest": "^26.4.4",
     "tsc-watch": "^4.2.9",

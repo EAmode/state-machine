@@ -45,7 +45,7 @@ export interface TransitionDefinition {
   from: State | State[] | StateResolveFunc
   to: State | State[] | StateResolveFunc
   action?: (t: Transition) => void
-  select?(transitions, fsm)
+  select?: (transitions: Transition[], fsm: FSM) => any
 }
 
 export type StateResolveFunc = (fsm: FSM) => State | State[]
@@ -53,10 +53,10 @@ export type StateResolveFunc = (fsm: FSM) => State | State[]
 export type StateMachineFunc = (fsm: FSM, from: State, to: State) => void
 
 export interface Guard {
-  (allStates: string, to: number, order: number, valid: boolean, data?: any)
+  (allStates: string, to: number, order: number, valid: boolean, data?: any): any
 }
 
-export type TransitionFilter = (tansitions: Transition[], fsm?: FSM, data?: any) => Transition[]
+export type TransitionFilter = (tansitions: Transition[], fsm: FSM, data?: any) => Transition[]
 
 export interface TransitionFilterMap {
   [index: string]: TransitionFilter

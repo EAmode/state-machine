@@ -1,4 +1,4 @@
-import { FSM } from '../src/ea-state-machine'
+import { FSM } from '../src/index'
 import { TransitionDefinitionMap, TransitionFilter } from '../src/types'
 
 const stepStateMachine = () => {

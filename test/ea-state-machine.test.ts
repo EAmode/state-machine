@@ -1,4 +1,4 @@
-import { FSM } from '../src/ea-state-machine'
+import { FSM } from '../src/index'
 import { Guard, TransitionDefinitionMap } from '../src/types'
 
 const h2oStateMachine = () => {

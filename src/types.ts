@@ -1,4 +1,4 @@
-import { FSM } from './ea-state-machine'
+import { FSM } from './index'
 
 export interface State {
   name: string

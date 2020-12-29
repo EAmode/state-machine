@@ -80,9 +80,9 @@ const transitionDefinition = {
   navigateTo: {
       from: () => [state.step1],
       to: () => [state.step2, state.step3],
-      action: (fsm, from, to) => {
-        console.log('currently in: ', fsm.currentState.name)
-        console.log('navigating to ', to.name)
+      action: (transition) => {
+        console.log('currently in: ', transition.fsm.currentState.name)
+        console.log('navigating to ', transition.toState.name)
       }
   }
 }

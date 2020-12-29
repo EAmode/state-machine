@@ -1,11 +1,27 @@
-import typescript from '@rollup/plugin-typescript'
+import commonjs from 'rollup-plugin-commonjs'
+import resolve from 'rollup-plugin-node-resolve'
+import sourcemaps from 'rollup-plugin-sourcemaps'
+import json from 'rollup-plugin-json'
 
 export default {
-  input: 'src/index.ts',
+  input: 'dist/index.js',
   output: {
-    dir: 'dist',
-    format: 'cjs',
+    file: 'dist/index.js',
+    format: 'es'
   },
-  external: ['rxjs'],
-  plugins: [typescript()],
+  plugins: [
+    sourcemaps(),
+    resolve({
+      jsnext: true,
+      main: true,
+      browser: true
+    }),
+    commonjs({
+      include: 'node_modules/**'
+    }),
+    json()
+  ],
+  external: [
+    'rxjs'
+  ]
 }

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2016",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "lib": ["ES2018"],
+    "strict": true,
+    "declaration": true,
+    "outDir": "./lib/cjs",
+    "sourceMap": true,
+
+  },
+  "include": ["./src"]
+}

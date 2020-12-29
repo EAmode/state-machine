@@ -11,6 +11,7 @@ import {
   TransitionFilterMap,
 } from './types'
 
+export * from './types'
 export class FSM {
   static selection: TransitionFilterMap = {
     allPossible: (tansitions) => tansitions.filter((t) => t.isPossible),

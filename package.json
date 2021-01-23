@@ -42,6 +42,10 @@
     "deploy-docs": "node tools/gh-pages-publish.js",
     "report-coverage": "cat ./coverage/lcov.info | coveralls"
   },
+  "np": {
+    "yarn": false,
+    "contents": "dist"
+  },
   "jest": {
     "transform": {
       ".(ts|tsx)": "ts-jest"

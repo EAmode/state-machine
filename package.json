@@ -13,9 +13,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/index.umd.js",
-  "module": "./dist/index.js",
-  "types": "./dist/types/index.d.ts",
+  "main": "./lib/index.umd.js",
+  "module": "./lib/index.js",
+  "types": "./lib/types/index.d.ts",
   "files": [
     "lib"
   ],
@@ -33,18 +33,14 @@
     "format": "prettier --write **/*.ts",
     "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "docs": "typedoc --out lib/docs --target es6 --mode file --theme minimal src",
-    "prebuild": "rimraf dist",
-    "build": "tsc && rollup -c && rollup -c -o dist/index.umd.js -f umd -n @eamode/state-machine --sourcemap",
+    "prebuild": "rimraf lib",
+    "build": "tsc && rollup -c && rollup -c -o lib/index.umd.js -f umd -n @eamode/state-machine --sourcemap",
     "start": "tsc -w",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
     "deploy-docs": "node tools/gh-pages-publish.js",
     "report-coverage": "cat ./coverage/lcov.info | coveralls"
-  },
-  "np": {
-    "yarn": false,
-    "contents": "dist"
   },
   "jest": {
     "transform": {

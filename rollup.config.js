@@ -4,9 +4,9 @@ import sourcemaps from 'rollup-plugin-sourcemaps'
 import json from 'rollup-plugin-json'
 
 export default {
-  input: 'dist/index.js',
+  input: 'lib/index.js',
   output: {
-    file: 'dist/index.js',
+    file: 'lib/index.js',
     format: 'es'
   },
   plugins: [

@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs'
 import { TransitionDefinitionNotExistsError, TransitionNotPossibleError } from './exceptions'
 import {
   State,

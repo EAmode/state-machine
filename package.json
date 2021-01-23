@@ -1,6 +1,6 @@
 {
   "name": "@eamode/state-machine",
-  "version": "1.0.0",
+  "version": "2.4.0",
   "description": "Finite State Machine",
   "keywords": [],
   "main": "./dist/index.umd.js",

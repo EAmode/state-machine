@@ -2,14 +2,23 @@
   "name": "@eamode/state-machine",
   "version": "2.4.0",
   "description": "Finite State Machine",
-  "keywords": [],
+  "author": "EA Mode LLC <info@eamode.com>",
+  "keywords": [
+    "FSM",
+    "State Machine",
+    "Finite State Machine",
+    "Routing"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.umd.js",
   "module": "./dist/index.js",
   "types": "./dist/types/index.d.ts",
   "files": [
     "lib"
   ],
-  "author": "info@eamode.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/eamode/state-machine.git"
@@ -17,7 +26,6 @@
   "bugs": {
     "url": "https://github.com/eamode/state-machine/issues"
   },
-  "license": "MIT",
   "engines": {
     "node": ">=6.0.0"
   },

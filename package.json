@@ -33,6 +33,7 @@
     "format": "prettier --write **/*.ts",
     "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "docs": "typedoc --out lib/docs --target es6 --mode file --theme minimal src",
+    "prepare": "npm run build",
     "prebuild": "rimraf lib",
     "build": "tsc && rollup -c && rollup -c -o lib/index.umd.js -f umd -n @eamode/state-machine --sourcemap",
     "start": "tsc -w",
